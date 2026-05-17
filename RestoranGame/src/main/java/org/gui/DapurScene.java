@@ -12,14 +12,10 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
-
-import org.controller.GameController;
-import org.example.Sellable;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -33,6 +29,9 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+
+import org.controller.GameController;
+import org.example.Sellable;
 
 public class DapurScene extends JPanel {
     
@@ -304,46 +303,24 @@ public class DapurScene extends JPanel {
 
         add(tokoButton);
 
+        // Tombol Beli
+        beli = new JButton();
+        beli.setBounds(40, 490, 220, 60);
+        setupImageButton(beli, "/buttons/beli.png");
+        beli.addActionListener(e -> {
+            buySelectedStock();
+            System.out.println("Aksi: Membeli bahan " + (nama != null ? nama : "kosong"));
+        });
+        add(beli);
+
+        // Tombol Mulai Hari
         mulaihari = new JButton();
-
         mulaihari.setBounds(280, 490, 220, 60);
-
-        setupImageButton(
-                mulaihari,
-                "/buttons/mulaihari.png"
-        );
-
-// ACTION
+        setupImageButton(mulaihari, "/buttons/mulaihari.png");
         mulaihari.addActionListener(e -> {
             ctrl.startSellingPhase();
         });
-
         add(mulaihari);
-
-    
-    
-    beli = new JButton();
-
-        beli.setBounds(90, 490, 220, 60);
-
-        setupImageButton(
-                beli,
-                "/buttons/beli.png"
-        );
-
-        beli.addActionListener(e -> buySelectedStock());
-
-// ACTION
-        beli.addActionListener(e -> {
-            
-            PopUpScene.beliStok(this);
-
-            System.out.println("Membeli bahan " + nama);
-
-        });
-
-        add(beli);
-
     }
 
     @Override

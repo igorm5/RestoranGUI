@@ -5,25 +5,19 @@
 package org.controller;
 
 /**
- *
- * @author ASUS
- */
-
-/**
- *
- * @author ASUS
- */
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
-public class GamePanel extends JPanel implements Runnable {
+public class GamePanel extends JPanel {
 
     // Screen settings
     final int originalTileSize = 16;
@@ -37,8 +31,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int screenWidth = tileSize * maxScreenCol;
     final int screenHeight = tileSize * maxScreenRow;
 
-    // Thread game
-    Thread gameThread;
+    private Timer gameTimer;
 
     // Shake effect
     public boolean isShaking = false;
@@ -48,61 +41,38 @@ public class GamePanel extends JPanel implements Runnable {
 
     // Timer game
     public int detikBerjalan = 0;
+    private int frameCounter = 0;
 
     public GamePanel() {
-
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
         this.setFocusable(true);
-
+        
+        // Inisialisasi Timer (berjalan setiap 16ms = ~60 FPS)
+        gameTimer = new Timer(16, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                update();
+                repaint();
+                
+                // Logika menghitung detik
+                frameCounter++;
+                if (frameCounter >= 60) { // Jika sudah 60 frame (1 detik)
+                    detikBerjalan++;
+                    frameCounter = 0;
+                }
+            }
+        });
     }
 
     public void startGameThread() {
-
-        gameThread = new Thread(this);
-        gameThread.start();
+        if (gameTimer.isRunning()) return;
+        gameTimer.start();
     }
-
-    @Override
-    public void run() {
-
-        double drawInterval = 1000000000 / 60;
-        double delta = 0;
-
-        long lastTime = System.nanoTime();
-        long currentTime;
-
-        long timer = 0;
-
-        while (gameThread != null) {
-
-            currentTime = System.nanoTime();
-
-            long passedTime = currentTime - lastTime;
-
-            delta += passedTime / drawInterval;
-
-            timer += passedTime;
-
-            lastTime = currentTime;
-
-            if (delta >= 1) {
-
-                update();
-                repaint();
-
-                delta--;
-            }
-
-            // timer per detik
-            if (timer >= 1000000000) {
-
-                detikBerjalan++;
-
-                timer = 0;
-            }
-        }
+    
+    public void stopGameThread() {
+        gameTimer.stop();
     }
 
     public void update() {
