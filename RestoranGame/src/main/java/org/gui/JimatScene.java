@@ -247,7 +247,7 @@ public class JimatScene extends JPanel {
     private void buyCharm(String type) {
         if (ctrl.beliJimat(type)) {
             JOptionPane.showMessageDialog(this, "Berhasil membeli Jimat " + type + "!");
-            PopUpScene.beliJimat(this);
+//            PopUpScene.beliJimat(this);
         } else {
             JOptionPane.showMessageDialog(this, "Uang tidak cukup untuk membeli Jimat " + type + ".");
         }

@@ -1,5 +1,5 @@
-Day: 5
-Money: 1015000.0
-Capacity: 30
-Level: 5
+Day: 1
+Money: 220000.0
+Capacity: 15
+Level: 2
 Inventory:
