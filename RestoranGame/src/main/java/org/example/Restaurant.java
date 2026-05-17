@@ -30,6 +30,7 @@ public class Restaurant {
     
     public double getMoney() { return money; }
     public int getCapacity() { return capacity; }
+    public void setCapacity(int capacity) { this.capacity = capacity; }
     public List<Sellable> getMenu() { return menuList; }
     public Map<String, Integer> getInventory() { return inventory; }
     public List<Charm> getActiveCharms() { return activeCharms; }
@@ -50,9 +51,16 @@ public class Restaurant {
         }
     }
 
-    public void saveProgress(int day) {
+    public void saveProgress(int day, int level) {
         try (FileWriter writer = new FileWriter("savegame.txt")) {
-            writer.write("Day: " + day + "\nMoney: " + money + "\nCapacity: " + capacity);
+            writer.write("Day: " + day + "\n");
+            writer.write("Money: " + money + "\n");
+            writer.write("Capacity: " + capacity + "\n");
+            writer.write("Level: " + level + "\n");
+            writer.write("Inventory:\n");
+            for (Map.Entry<String, Integer> entry : inventory.entrySet()) {
+                writer.write(entry.getKey() + "=" + entry.getValue() + "\n");
+            }
             System.out.println("[SYSTEM] Progress permainan berhasil disimpan ke savegame.txt");
         } catch (IOException e) {
             System.out.println("[ERROR] Gagal menyimpan file: " + e.getMessage());

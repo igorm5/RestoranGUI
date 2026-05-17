@@ -4,12 +4,37 @@ package org.gui;
  *
  * @author ASUS
  */
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.Image;
+import java.util.List;
+
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+
+import org.controller.GameController;
+import org.example.Charm;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 public class JimatScene extends JPanel {
 
-    public JimatScene() {
+    private GameController ctrl;
+    private JLabel lblMoney;
+    private JLabel lblCharms;
+
+    public JimatScene(GameController ctrl) {
+        this.ctrl = ctrl;
 
         setLayout(null);
         setBackground(new Color(30, 25, 40));
@@ -27,6 +52,11 @@ public class JimatScene extends JPanel {
         imageLabel.setBounds(100, 20, 600, 200);
 
         add(imageLabel);
+
+        lblMoney = createInfoLabel("Uang: Rp0", 60, 245);
+        lblCharms = createInfoLabel("Jimat aktif: 0", 300, 245);
+        add(lblMoney);
+        add(lblCharms);
 
         JPanel buttonRow = new JPanel();
         buttonRow.setLayout(new GridLayout(1, 3, 20, 0));
@@ -51,29 +81,9 @@ public class JimatScene extends JPanel {
                 "/lainnya/cleaner.png"
         );
 
-        b1.addActionListener(e -> {
-
-            PopUpScene.beliJimat(this);
-
-            System.out.println("Membeli Charming Jimat!");
-
-        });
-
-        b2.addActionListener(e -> {
-
-            PopUpScene.beliJimat(this);
-
-            System.out.println("Membeli Security Jimat!");
-
-        });
-
-        b3.addActionListener(e -> {
-
-            PopUpScene.beliJimat(this);
-
-            System.out.println("Membeli Cleaner Jimat!");
-
-        });
+        b1.addActionListener(e -> buyCharm("Charming"));
+        b2.addActionListener(e -> buyCharm("Security"));
+        b3.addActionListener(e -> buyCharm("Cleaner"));
 
         buttonRow.add(b1);
         buttonRow.add(b2);
@@ -81,22 +91,17 @@ public class JimatScene extends JPanel {
 
         add(buttonRow);
 
-        JButton beliBtn = new JButton();
-        beliBtn.setBounds(180, 430, 180, 80);
+        JButton backBtn = new JButton();
+        backBtn.setBounds(180, 430, 180, 80);
+        setupImageButton(backBtn, "/buttons/batal.png");
+        backBtn.addActionListener(e -> ctrl.mainFrame().showPanel("dapur"));
+        add(backBtn);
 
         JButton nextBtn = new JButton();
         nextBtn.setBounds(430, 430, 180, 80);
-
         setupImageButton(nextBtn, "/buttons/next.png");
-
-        nextBtn.addActionListener(e -> {
-
-            JOptionPane.showMessageDialog(
-                    null,
-                    "Next"
-            );
-
-        });
+        nextBtn.addActionListener(e -> ctrl.mainFrame().showPanel("dapur"));
+        add(nextBtn);
 
         add(nextBtn);
     }
@@ -229,5 +234,29 @@ public class JimatScene extends JPanel {
         });
 
         return button;
+    }
+
+    private JLabel createInfoLabel(String text, int x, int y) {
+        JLabel label = new JLabel(text);
+        label.setForeground(Color.WHITE);
+        label.setFont(new Font("Arial", Font.BOLD, 14));
+        label.setBounds(x, y, 240, 30);
+        return label;
+    }
+
+    private void buyCharm(String type) {
+        if (ctrl.beliJimat(type)) {
+            JOptionPane.showMessageDialog(this, "Berhasil membeli Jimat " + type + "!");
+            PopUpScene.beliJimat(this);
+        } else {
+            JOptionPane.showMessageDialog(this, "Uang tidak cukup untuk membeli Jimat " + type + ".");
+        }
+        ctrl.refreshHUD();
+    }
+
+    public void refresh(int uang, List<org.example.Charm> charms) {
+        lblMoney.setText("Uang: Rp" + uang);
+        lblCharms.setText("Jimat aktif: " + charms.size());
+        repaint();
     }
 }

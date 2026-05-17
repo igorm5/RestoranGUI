@@ -4,18 +4,43 @@ package org.gui;
  *
  * @author ASUS
  */
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import javax.imageio.ImageIO;
-import javax.swing.*;
+
+import org.controller.GameController;
+import org.example.Sellable;
+import javax.swing.BorderFactory;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import org.gui.*;
 
 public class DapurScene extends JPanel {
     
+    private GameController ctrl;
+    private JLabel lblMoney;
+    private JLabel lblStock;
+    private JLabel lblSelectedIngredient;
+
     String nama;
 
     JTable table;
@@ -61,10 +86,32 @@ public class DapurScene extends JPanel {
     JButton beli;
     String gameMessage = "Silakan pilih bahan yang tersedia di dapur.";
 
-    public DapurScene() {
+    public DapurScene(GameController ctrl) {
+        this.ctrl = ctrl;
 
         setLayout(null);
         setBackground(new Color(30, 20, 10));
+
+        lblMoney = createInfoLabel("Uang: Rp0", 520, 20);
+        lblStock = createInfoLabel("Stok: 0", 520, 50);
+        lblSelectedIngredient = createInfoLabel("Bahan terpilih: -", 520, 80);
+        add(lblMoney);
+        add(lblStock);
+        add(lblSelectedIngredient);
+
+        JButton priceBtn = makeActionButton("Atur Harga Menu", 520, 110, 200, 40, new Color(120, 80, 180));
+        priceBtn.addActionListener(e -> adjustMenuPrice());
+        add(priceBtn);
+
+        JButton upgradeBtn = makeActionButton("Upgrade Level", 520, 160, 200, 40, new Color(80, 120, 180));
+        upgradeBtn.addActionListener(e -> {
+            if (ctrl.upgradeLevel()) {
+                JOptionPane.showMessageDialog(this, "Restoran berhasil naik level!");
+            } else {
+                JOptionPane.showMessageDialog(this, "Uang tidak cukup atau level sudah maksimal.");
+            }
+        });
+        add(upgradeBtn);
 
         images = new BufferedImage[14];
 
@@ -251,6 +298,10 @@ public class DapurScene extends JPanel {
 
         tokoButton.setBounds(550, 500, 200, 40);
 
+        tokoButton.addActionListener(e -> {
+            ctrl.mainFrame().showPanel("jimat");
+        });
+
         add(tokoButton);
 
         mulaihari = new JButton();
@@ -264,12 +315,7 @@ public class DapurScene extends JPanel {
 
 // ACTION
         mulaihari.addActionListener(e -> {
-
-            JOptionPane.showMessageDialog(
-                    null,
-                    "Hari Dimulai!"
-            );
-
+            ctrl.startSellingPhase();
         });
 
         add(mulaihari);
@@ -284,6 +330,8 @@ public class DapurScene extends JPanel {
                 beli,
                 "/buttons/beli.png"
         );
+
+        beli.addActionListener(e -> buySelectedStock());
 
 // ACTION
         beli.addActionListener(e -> {
@@ -410,5 +458,132 @@ public class DapurScene extends JPanel {
                 button.setIcon(normalIcon);
             }
         });
+    }
+
+    private JLabel createInfoLabel(String text, int x, int y) {
+        JLabel label = new JLabel(text);
+        label.setForeground(Color.WHITE);
+        label.setFont(loadFont(14f));
+        label.setBounds(x, y, 200, 30);
+        return label;
+    }
+
+    private JButton makeActionButton(String text, int x, int y, int width, int height, Color color) {
+        JButton button = new JButton(text);
+        button.setBounds(x, y, width, height);
+        button.setBackground(color);
+        button.setForeground(Color.WHITE);
+        button.setFont(new Font("Arial", Font.BOLD, 12));
+        button.setFocusPainted(false);
+        button.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+        return button;
+    }
+
+    private void buySelectedStock() {
+        int row = table.getSelectedRow();
+        if (row == -1) {
+            JOptionPane.showMessageDialog(this, "Pilih bahan yang ingin dibeli terlebih dahulu.");
+            return;
+        }
+
+        String bahan = namaBahan[row];
+        String hargaText = hargaBahan[row].replace("Rp", "").replace(".", "").trim();
+        int hargaPerSepuluh;
+        try {
+            hargaPerSepuluh = Integer.parseInt(hargaText);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Harga bahan tidak valid.");
+            return;
+        }
+
+        String jumlahInput = JOptionPane.showInputDialog(
+                this,
+                "Masukkan jumlah paket (1 paket = 10 unit):",
+                "Beli Bahan",
+                JOptionPane.PLAIN_MESSAGE
+        );
+
+        if (jumlahInput == null || jumlahInput.isBlank()) {
+            return;
+        }
+
+        try {
+            int paket = Integer.parseInt(jumlahInput.trim());
+            if (paket <= 0) {
+                JOptionPane.showMessageDialog(this, "Jumlah paket harus lebih besar dari 0.");
+                return;
+            }
+
+            int quantity = paket * 10;
+            int unitPrice = Math.max(1, hargaPerSepuluh / 10);
+            boolean purchased = ctrl.beliStok(bahan, quantity, unitPrice);
+            if (purchased) {
+                JOptionPane.showMessageDialog(this, "Berhasil membeli " + quantity + " " + bahan + "!");
+                lblSelectedIngredient.setText("Bahan terpilih: " + bahan);
+            } else {
+                JOptionPane.showMessageDialog(this, "Uang tidak cukup untuk membeli " + bahan + ".");
+            }
+            ctrl.refreshHUD();
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Masukkan angka valid untuk jumlah paket.");
+        }
+    }
+
+    private void adjustMenuPrice() {
+        java.util.List<Sellable> menu = ctrl.getCurrentMenu();
+        if (menu.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Menu belum tersedia.");
+            return;
+        }
+
+        String[] options = menu.stream().map(Sellable::getName).toArray(String[]::new);
+        int selected = JOptionPane.showOptionDialog(
+                this,
+                "Pilih menu yang ingin diubah harganya:",
+                "Atur Harga Menu",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                options,
+                options[0]
+        );
+
+        if (selected < 0) {
+            return;
+        }
+
+        String currentPrice = String.valueOf((int) menu.get(selected).getPrice());
+        String input = JOptionPane.showInputDialog(
+                this,
+                "Masukkan harga baru untuk " + menu.get(selected).getName() + ":",
+                currentPrice
+        );
+        if (input == null || input.isBlank()) {
+            return;
+        }
+
+        try {
+            double hargaBaru = Double.parseDouble(input.trim());
+            if (hargaBaru <= 0) {
+                JOptionPane.showMessageDialog(this, "Harga harus lebih besar dari 0.");
+                return;
+            }
+            ctrl.setMenuPrice(selected, hargaBaru);
+            JOptionPane.showMessageDialog(this, "Harga " + menu.get(selected).getName() + " diset menjadi Rp" + (int) hargaBaru + ".");
+            ctrl.refreshHUD();
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Masukkan angka valid untuk harga.");
+        }
+    }
+
+    public void refresh(
+            int uang,
+            int stok,
+            Map<String, Integer> inventory,
+            List<org.example.Sellable> menu
+    ) {
+        lblMoney.setText("Uang: Rp" + uang);
+        lblStock.setText("Stok: " + stok);
+        repaint();
     }
 }

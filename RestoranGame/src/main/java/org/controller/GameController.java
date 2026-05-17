@@ -2,7 +2,9 @@ package org.controller;
 
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -78,6 +80,7 @@ public class GameController {
 
     // ─── Upgrade cost per level ────────────────────────────────────────────────
     private static final int[] UPGRADE_COST = { 0, 50000, 80000, 120000, 200000 };
+    private static final int[] LEVEL_CAPACITY = {10, 15, 20, 25, 30};
 
     public GameController(MainFrame frame) {
         // mainFrame() getter added below
@@ -104,19 +107,39 @@ public class GameController {
         int day = 1;
         double money = 100000;
         int capacity = 10;
+        int level = 1;
+        Map<String, Integer> savedInventory = new HashMap<>();
+
         try (BufferedReader br = new BufferedReader(new FileReader("savegame.txt"))) {
             String line;
+            boolean readingInventory = false;
             while ((line = br.readLine()) != null) {
                 if (line.startsWith("Day:")) day = Integer.parseInt(line.split(":")[1].trim());
                 else if (line.startsWith("Money:")) money = Double.parseDouble(line.split(":")[1].trim());
                 else if (line.startsWith("Capacity:")) capacity = Integer.parseInt(line.split(":")[1].trim());
+                else if (line.startsWith("Level:")) level = Integer.parseInt(line.split(":")[1].trim());
+                else if (line.startsWith("Inventory:")) readingInventory = true;
+                else if (readingInventory && line.contains("=")) {
+                    String[] parts = line.split("=");
+                    if (parts.length == 2) {
+                        String item = parts[0].trim();
+                        int qty = Integer.parseInt(parts[1].trim());
+                        savedInventory.put(item, qty);
+                    }
+                }
             }
         } catch (IOException e) {
             System.out.println("[LOAD] Tidak ada savegame, memulai game baru.");
         }
+
         this.currentDay = day;
+        this.currentLevel = Math.min(Math.max(level, 1), 5);
         this.restaurant = new Restaurant(money, capacity);
         setupMenuForLevel(currentLevel);
+        this.restaurant.getInventory().clear();
+        for (Map.Entry<String, Integer> entry : savedInventory.entrySet()) {
+            restaurant.addInventory(entry.getKey(), entry.getValue());
+        }
         dailyLog.clear();
         dailyLog.add("=== DILANJUTKAN DARI SAVE: Hari ke-" + currentDay + " ===");
         refreshHUD();
@@ -177,6 +200,10 @@ public class GameController {
         return LEVEL_MENUS[currentLevel - 1];
     }
 
+    public List<Sellable> getCurrentMenu() {
+        return new ArrayList<>(restaurant.getMenu());
+    }
+
     // ══════════════════════════════════════════════════════════════════════════
     //  FASE PERSIAPAN – aksi pemain
     // ══════════════════════════════════════════════════════════════════════════
@@ -223,6 +250,7 @@ public class GameController {
         if (restaurant.getMoney() < cost) return false;
         restaurant.addMoney(-cost);
         currentLevel++;
+        restaurant.setCapacity(LEVEL_CAPACITY[currentLevel - 1]);
         setupMenuForLevel(currentLevel);
         dailyLog.add("[UPGRADE] Restoran naik ke Level " + currentLevel + "! (-Rp" + cost + ")");
         refreshHUD();
@@ -388,7 +416,7 @@ public class GameController {
 
         restaurant.clearInventory();
         restaurant.getActiveCharms().clear(); // charm habis per hari
-        restaurant.saveProgress(currentDay);
+        restaurant.saveProgress(currentDay, currentLevel);
 
         currentPhase = Phase.RECAP;
         showRecap(skipped, basiLoss);
