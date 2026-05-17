@@ -44,7 +44,7 @@ public class Level5Scene extends JPanel implements LevelScene {
         String[] menuImages = { "/menu/kopi.png", "/menu/nasiayam.png", "/menu/kentanggoreng.png", "/menu/susu.png", "/menu/jusjambu.png", "/menu/jusmelon.png" };
         JPanel menuPanel = new JPanel(new GridLayout(1, menuImages.length, 5, 15));
         menuPanel.setOpaque(false);
-        menuPanel.setBounds(40, 355, 720, 100);
+        menuPanel.setBounds(4-20, 240, 720, 100);
         for (String path : menuImages) {
             JButton btn = new JButton();
             setupMenuButton(btn, path);
@@ -53,7 +53,7 @@ public class Level5Scene extends JPanel implements LevelScene {
         add(menuPanel);
 
         JButton btnSkip = makeButton("SKIP HARI INI", new Color(150, 80, 20));
-        btnSkip.setBounds(550, 555, 200, 35);
+        btnSkip.setBounds(450, 410, 200, 35);
         btnSkip.addActionListener(e -> ctrl.skipDay());
         add(btnSkip);
     }
@@ -63,22 +63,24 @@ public class Level5Scene extends JPanel implements LevelScene {
         Graphics2D g2 = (Graphics2D) g;
         g2.setColor(new Color(30, 20, 10));
         g2.fillRect(0, 0, getWidth(), getHeight());
-        drawStatusBox(g2, levelBox, 60, 20, String.valueOf(level));
-        drawStatusBox(g2, uangBox, 300, 20, "Rp" + uang);
-        drawStatusBox(g2, stokBox, 540, 20, String.valueOf(stok));
-        if (foodImage != null) g.drawImage(foodImage, 60, 60, 680, 280, this);
+       drawStatusBox(g2, levelBox, 30, 10, String.valueOf(level));
+        drawStatusBox(g2, uangBox, 230, 10, "Rp" + uang);
+        drawStatusBox(g2, stokBox, 430, 10, String.valueOf(stok));
+        if (foodImage != null) g.drawImage(foodImage, 30, 40, 600, 200, this);
         g2.setColor(new Color(255, 220, 150));
-        g2.fillRoundRect(80, 345, 640, 5, 10, 10);
+        g2.fillRoundRect(-30, 250, 1000, 5, 10, 10);
+        // Timer
         g2.setColor(new Color(255, 220, 80));
         g2.setFont(loadFont(18f));
-        g2.drawString("Waktu: " + timerText, 340, 555);
+        g2.drawString("Waktu: " + timerText, 20, 450);
+        // Message box
         g2.setColor(new Color(0, 0, 0, 180));
-        g2.fillRoundRect(40, 480, 720, 60, 20, 20);
+        g2.fillRoundRect(20, 340, 600, 60, 20, 20);
         g2.setColor(Color.WHITE);
-        g2.drawRoundRect(40, 480, 720, 60, 20, 20);
+        g2.drawRoundRect(20, 340, 600, 60, 20, 20);
         g2.setFont(loadFont(11f));
         g2.setColor(Color.WHITE);
-        g2.drawString(gameMessage, 60, 510);
+        g2.drawString(gameMessage, 40, 370);
     }
 
     private void drawStatusBox(

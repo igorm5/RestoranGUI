@@ -21,7 +21,7 @@ public class TycoonGame {
 
         // Run Simulasi
         simulateDay(myResto, 1);
-        myResto.saveProgress(1);
+        //myResto.saveProgress(1);
     }
 
     private static void simulateDay(Restaurant resto, int day) {

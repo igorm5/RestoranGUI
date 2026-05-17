@@ -20,7 +20,7 @@ public class Start extends JPanel {
         JLabel title = new JLabel("RESTAURANT TYCOON");
         title.setForeground(Color.WHITE);
         title.setFont(loadFont(36f));
-        title.setBounds(70, 180, 1000, 80);
+        title.setBounds(25, 130, 1000, 80);
         add(title);
 
         // START BUTTON
@@ -28,7 +28,7 @@ public class Start extends JPanel {
 
         setupImageButton(startBtn, "/buttons/start.png");
 
-        startBtn.setBounds(275, 250, 220, 80);
+        startBtn.setBounds(225, 210, 220, 80);
 
         startBtn.addActionListener(e -> {
             frame.getCtrl().newGame();
@@ -41,7 +41,7 @@ public class Start extends JPanel {
 
         setupImageButton(loadBtn, "/buttons/load.png");
 
-        loadBtn.setBounds(275, 270, 220, 160);
+        loadBtn.setBounds(225, 230, 220, 160);
 
         loadBtn.addActionListener(e -> {
             frame.getCtrl().loadGame();

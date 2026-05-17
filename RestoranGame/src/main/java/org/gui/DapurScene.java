@@ -34,7 +34,7 @@ import org.controller.GameController;
 import org.example.Sellable;
 
 public class DapurScene extends JPanel {
-    
+
     private GameController ctrl;
     private JLabel lblMoney;
     private JLabel lblStock;
@@ -91,25 +91,42 @@ public class DapurScene extends JPanel {
         setLayout(null);
         setBackground(new Color(30, 20, 10));
 
-        lblMoney = createInfoLabel("Uang: Rp0", 520, 20);
-        lblStock = createInfoLabel("Stok: 0", 520, 50);
-        lblSelectedIngredient = createInfoLabel("Bahan terpilih: -", 520, 80);
+        lblMoney = createInfoLabel("Uang: Rp0", 450, 10);
+        lblStock = createInfoLabel("Stok: 0", 450, 30);
+        lblSelectedIngredient = createInfoLabel("Bahan terpilih: -", 450, 50);
         add(lblMoney);
         add(lblStock);
         add(lblSelectedIngredient);
 
-        JButton priceBtn = makeActionButton("Atur Harga Menu", 520, 110, 200, 40, new Color(120, 80, 180));
+        JButton priceBtn = makeActionButton("Atur Harga Menu", 420, 250, 200, 40, new Color(120, 80, 180));
         priceBtn.addActionListener(e -> adjustMenuPrice());
         add(priceBtn);
+        
 
-        JButton upgradeBtn = makeActionButton("Upgrade Level", 520, 160, 200, 40, new Color(80, 120, 180));
+        JButton upgradeBtn = new JButton();
+
+        upgradeBtn.setBounds(300, 370, 180, 60);
+
+        setupImageButton(upgradeBtn, "/buttons/upgrade.png");
+
         upgradeBtn.addActionListener(e -> {
+
             if (ctrl.upgradeLevel()) {
-                JOptionPane.showMessageDialog(this, "Restoran berhasil naik level!");
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Restoran berhasil naik level!"
+                );
+
             } else {
-                JOptionPane.showMessageDialog(this, "Uang tidak cukup atau level sudah maksimal.");
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Uang tidak cukup atau level sudah maksimal."
+                );
             }
         });
+
         add(upgradeBtn);
 
         images = new BufferedImage[14];
@@ -137,7 +154,7 @@ public class DapurScene extends JPanel {
 
         JLabel title = new JLabel("FASE PERSIAPAN");
 
-        title.setFont(loadFont(30f));
+        title.setFont(loadFont(20f));
 
         title.setForeground(Color.WHITE);
 
@@ -259,33 +276,33 @@ public class DapurScene extends JPanel {
 
         JScrollPane scrollPane = new JScrollPane(table);
 
-        scrollPane.setBounds(90, 80, 620, 300);
+        scrollPane.setBounds(20, 80, 620, 150);
 
         add(scrollPane);
-        
+
         table.addMouseListener(new java.awt.event.MouseAdapter() {
 
-    @Override
-    public void mouseClicked(java.awt.event.MouseEvent e) {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
 
-        int row = table.getSelectedRow();
+                int row = table.getSelectedRow();
 
-        if (row != -1) {
+                if (row != -1) {
 
-            nama = namaBahan[row];
-            String harga = hargaBahan[row];
+                    nama = namaBahan[row];
+                    String harga = hargaBahan[row];
 
-            gameMessage =
-                    nama + " dipilih dengan harga " + harga;
+                    gameMessage
+                            = nama + " dipilih dengan harga " + harga;
 
-            repaint();
-        }
-    }
-});
+                    repaint();
+                }
+            }
+        });
 
         tokoButton = new JButton("Ke Toko Jimat");
 
-        tokoButton.setFont(loadFont(14f));
+        tokoButton.setFont(loadFont(8f));
 
         tokoButton.setFocusPainted(false);
 
@@ -295,7 +312,7 @@ public class DapurScene extends JPanel {
 
         tokoButton.setBorder(BorderFactory.createLineBorder(Color.WHITE));
 
-        tokoButton.setBounds(550, 500, 200, 40);
+        tokoButton.setBounds(460, 400, 180, 40);
 
         tokoButton.addActionListener(e -> {
             ctrl.mainFrame().showPanel("jimat");
@@ -305,7 +322,7 @@ public class DapurScene extends JPanel {
 
         // Tombol Beli
         beli = new JButton();
-        beli.setBounds(40, 490, 220, 60);
+        beli.setBounds(10, 370, 180, 60);
         setupImageButton(beli, "/buttons/beli.png");
         beli.addActionListener(e -> {
             buySelectedStock();
@@ -315,7 +332,7 @@ public class DapurScene extends JPanel {
 
         // Tombol Mulai Hari
         mulaihari = new JButton();
-        mulaihari.setBounds(280, 490, 220, 60);
+        mulaihari.setBounds(150, 370, 180, 60);
         setupImageButton(mulaihari, "/buttons/mulaihari.png");
         mulaihari.addActionListener(e -> {
             ctrl.startSellingPhase();
@@ -332,9 +349,9 @@ public class DapurScene extends JPanel {
         g2.setColor(new Color(0, 0, 0, 180));
 
         g2.fillRoundRect(
-                40,
-                410,
-                720,
+                20,
+                310,
+                600,
                 60,
                 20,
                 20
@@ -344,22 +361,22 @@ public class DapurScene extends JPanel {
         g2.setColor(Color.WHITE);
 
         g2.drawRoundRect(
-                40,
-                410,
-                720,
+                20,
+                310,
+                600,
                 60,
                 20,
                 20
         );
 
         // TEXT
-        g2.setFont(loadFont(14f));
+        g2.setFont(loadFont(10f));
 
         g2.drawString(
-        gameMessage,
-        60,
-        445
-);
+                gameMessage,
+                40,
+                345
+        );
     }
 
     private Font loadFont(float size) {
@@ -387,7 +404,7 @@ public class DapurScene extends JPanel {
                 getClass().getResource(path)
         );
 
-        int targetWidth = 220;
+        int targetWidth = 160;
 
         int originalW = originalIcon.getIconWidth();
         int originalH = originalIcon.getIconHeight();
@@ -440,19 +457,41 @@ public class DapurScene extends JPanel {
     private JLabel createInfoLabel(String text, int x, int y) {
         JLabel label = new JLabel(text);
         label.setForeground(Color.WHITE);
-        label.setFont(loadFont(14f));
+        label.setFont(loadFont(10f));
         label.setBounds(x, y, 200, 30);
         return label;
     }
 
-    private JButton makeActionButton(String text, int x, int y, int width, int height, Color color) {
+    private JButton makeActionButton(
+            String text,
+            int x,
+            int y,
+            int width,
+            int height,
+            Color color
+    ) {
+
         JButton button = new JButton(text);
+
         button.setBounds(x, y, width, height);
-        button.setBackground(color);
+
+        // WARNA COKLAT MUDA
+        button.setBackground(new Color(201, 145, 87));
+
         button.setForeground(Color.WHITE);
-        button.setFont(new Font("Arial", Font.BOLD, 12));
+
+        // FONT PIXEL
+        button.setFont(loadFont(10f));
+
         button.setFocusPainted(false);
-        button.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+
+        button.setBorder(
+                BorderFactory.createLineBorder(
+                        new Color(120, 70, 30),
+                        3
+                )
+        );
+
         return button;
     }
 

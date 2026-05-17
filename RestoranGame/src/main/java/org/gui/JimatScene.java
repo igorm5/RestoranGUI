@@ -46,21 +46,21 @@ public class JimatScene extends JPanel {
         );
 
         Image scaled = img.getImage()
-                .getScaledInstance(600, 200, Image.SCALE_SMOOTH);
+                .getScaledInstance(400, 150, Image.SCALE_SMOOTH);
 
         imageLabel.setIcon(new ImageIcon(scaled));
-        imageLabel.setBounds(100, 20, 600, 200);
+        imageLabel.setBounds(110, 20, 400, 150);
 
         add(imageLabel);
 
-        lblMoney = createInfoLabel("Uang: Rp0", 60, 245);
-        lblCharms = createInfoLabel("Jimat aktif: 0", 300, 245);
+        lblMoney = createInfoLabel("Uang: Rp0", 520, 50);
+        lblCharms = createInfoLabel("Jimat aktif: 0", 520, 80);
         add(lblMoney);
         add(lblCharms);
 
         JPanel buttonRow = new JPanel();
         buttonRow.setLayout(new GridLayout(1, 3, 20, 0));
-        buttonRow.setBounds(60, 240, 680, 180);
+        buttonRow.setBounds(30, 180, 600, 180);
         buttonRow.setOpaque(false);
 
         JButton b1 = createJimatCard(
@@ -92,13 +92,13 @@ public class JimatScene extends JPanel {
         add(buttonRow);
 
         JButton backBtn = new JButton();
-        backBtn.setBounds(180, 430, 180, 80);
+        backBtn.setBounds(120, 360, 180, 80);
         setupImageButton(backBtn, "/buttons/batal.png");
         backBtn.addActionListener(e -> ctrl.mainFrame().showPanel("dapur"));
         add(backBtn);
 
         JButton nextBtn = new JButton();
-        nextBtn.setBounds(430, 430, 180, 80);
+        nextBtn.setBounds(370, 360, 180, 80);
         setupImageButton(nextBtn, "/buttons/next.png");
         nextBtn.addActionListener(e -> ctrl.mainFrame().showPanel("dapur"));
         add(nextBtn);
