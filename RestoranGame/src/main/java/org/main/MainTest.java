@@ -27,9 +27,19 @@ public class MainTest {
 
             frame.setLocationRelativeTo(null);
 
-            frame.setContentPane(new Level5Scene());
+            Level5Scene scene = new Level5Scene();
+
+            frame.setContentPane(scene);
 
             frame.setVisible(true);
+
+            // TEST POPUP
+            PopUpScene.pelanggankabur(scene);
+
+            // TEST LAIN
+            // Popup.notifStokHabis(scene);
+            // Popup.notifLevelUp(scene);
+            // Popup.notifUangKurang(scene);
         });
     }
 }
