@@ -286,6 +286,121 @@ public class PopUpScene {
 
         // TEXT
         JLabel text = new JLabel(
+                "BELI BAHAN INI?",
+                SwingConstants.CENTER
+        );
+
+        text.setForeground(Color.WHITE);
+
+        text.setFont(loadFont(18f));
+
+        text.setBounds(40, 40, 370, 40);
+
+        panel.add(text);
+
+        JButton yesBtn = new JButton();
+
+        setupImageButton(
+                yesBtn,
+                "/buttons/beli.png"
+        );
+
+        yesBtn.setBounds(70, 120, 130, 60);
+
+        yesBtn.addActionListener(e -> {
+
+            System.out.println("YES");
+
+            dialog.dispose();
+        });
+
+        panel.add(yesBtn);
+
+        JButton noBtn = new JButton();
+
+        setupImageButton(
+                noBtn,
+                "/buttons/batal.png"
+        );
+
+        noBtn.setBounds(250, 120, 130, 60);
+
+        noBtn.addActionListener(e -> {
+
+            System.out.println("NO");
+
+            dialog.dispose();
+        });
+
+        panel.add(noBtn);
+
+        dialog.add(panel);
+
+        dialog.setVisible(true);
+    }
+    
+    public static void beliJimat(Component parent) {
+
+        // DIALOG
+        JDialog dialog = new JDialog();
+
+        dialog.setUndecorated(true);
+
+        dialog.setBackground(new Color(0, 0, 0, 0));
+
+        dialog.setSize(450, 250);
+
+        dialog.setLocationRelativeTo(parent);
+
+        // PANEL
+        JPanel panel = new JPanel() {
+
+            @Override
+            protected void paintComponent(Graphics g) {
+
+                super.paintComponent(g);
+
+                Graphics2D g2 = (Graphics2D) g;
+
+                g2.setRenderingHint(
+                        RenderingHints.KEY_ANTIALIASING,
+                        RenderingHints.VALUE_ANTIALIAS_ON
+                );
+
+                // BACKGROUND
+                g2.setColor(new Color(0, 0, 0));
+
+                g2.fillRoundRect(
+                        0,
+                        0,
+                        getWidth(),
+                        getHeight(),
+                        40,
+                        40
+                );
+
+                // OUTLINE
+                g2.setColor(Color.WHITE);
+
+                g2.setStroke(new BasicStroke(5));
+
+                g2.drawRoundRect(
+                        2,
+                        2,
+                        getWidth() - 5,
+                        getHeight() - 5,
+                        40,
+                        40
+                );
+            }
+        };
+
+        panel.setOpaque(false);
+
+        panel.setLayout(null);
+
+        // TEXT
+        JLabel text = new JLabel(
                 "BELI JIMAT?",
                 SwingConstants.CENTER
         );

@@ -190,9 +190,9 @@ g2.drawString(
 
     // VALUE
     g2.setFont(loadFont(16f));
-    g2.setColor(Color.WHITE);
+    g2.setColor(new Color(30, 20, 10));
 
-    g2.drawString(value, x + 100, y + 23);
+    g2.drawString(value, x + 40, y + 23);
 }
 
     private Font loadFont(float size) {

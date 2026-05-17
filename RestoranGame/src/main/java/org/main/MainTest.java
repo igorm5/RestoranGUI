@@ -8,8 +8,6 @@ package org.main;
  *
  * @author ASUS
  */
-
-
 import javax.swing.*;
 import org.gui.*;
 
@@ -34,8 +32,7 @@ public class MainTest {
             frame.setVisible(true);
 
             // TEST POPUP
-            PopUpScene.pelanggankabur(scene);
-
+            //PopUpScene.pelanggankabur(scene);
             // TEST LAIN
             // Popup.notifStokHabis(scene);
             // Popup.notifLevelUp(scene);
