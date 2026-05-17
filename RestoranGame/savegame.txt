@@ -1,3 +1,3 @@
-Day: 1
-Money: 190000.0
+Day: 4
+Money: 397500.0
 Capacity: 10

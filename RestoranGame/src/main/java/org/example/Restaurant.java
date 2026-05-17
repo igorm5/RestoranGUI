@@ -1,5 +1,7 @@
 package org.example;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,6 +34,7 @@ public class Restaurant {
     public int getCapacity() { return capacity; }
     public List<Sellable> getMenu() { return menuList; }
     public Map<String, Integer> getInventory() { return inventory; }
+    public List<Charm> getActiveCharms() { return activeCharms; }
     
     public void ratDisaster() {
         double preventChance = 0;
