@@ -53,13 +53,10 @@ public class DapurScene extends JPanel {
         "Gula",
         "Jambu",
         "Kentang",
-        "Kol",
         "Melon",
         "Minyak",
-        "Paprika",
-        "Sawi",
+        "Sayuran",
         "Susu",
-        "Tomat",
         "Kopi"
     };
 
@@ -70,11 +67,8 @@ public class DapurScene extends JPanel {
         "Rp1.000",
         "Rp1.000",
         "Rp1.000",
-        "Rp0.000",
         "Rp2.000",
         "Rp3.000",
-        "Rp1.000",
-        "Rp1.000",
         "Rp1.000",
         "Rp1.000",
         "Rp1.000"
@@ -91,9 +85,9 @@ public class DapurScene extends JPanel {
         setLayout(null);
         setBackground(new Color(30, 20, 10));
 
-        lblMoney = createInfoLabel("Uang: Rp0", 450, 10);
-        lblStock = createInfoLabel("Stok: 0", 450, 30);
-        lblSelectedIngredient = createInfoLabel("Bahan terpilih: -", 450, 50);
+        lblMoney = createInfoLabel("Uang: Rp0", 400, 10);
+        lblStock = createInfoLabel("Stok: 0", 400, 30);
+        lblSelectedIngredient = createInfoLabel("Bahan terpilih: -", 400, 50);
         add(lblMoney);
         add(lblStock);
         add(lblSelectedIngredient);
@@ -129,7 +123,7 @@ public class DapurScene extends JPanel {
 
         add(upgradeBtn);
 
-        images = new BufferedImage[14];
+        images = new BufferedImage[11];
 
         try {
 
@@ -139,14 +133,11 @@ public class DapurScene extends JPanel {
             images[3] = ImageIO.read(getClass().getResourceAsStream("/bahan/gula.png"));
             images[4] = ImageIO.read(getClass().getResourceAsStream("/bahan/jambu.png"));
             images[5] = ImageIO.read(getClass().getResourceAsStream("/bahan/kentang.png"));
-            images[6] = ImageIO.read(getClass().getResourceAsStream("/bahan/kol.png"));
-            images[7] = ImageIO.read(getClass().getResourceAsStream("/bahan/melon.png"));
-            images[8] = ImageIO.read(getClass().getResourceAsStream("/bahan/minyak.png"));
-            images[9] = ImageIO.read(getClass().getResourceAsStream("/bahan/paprika.png"));
-            images[10] = ImageIO.read(getClass().getResourceAsStream("/bahan/sawi.png"));
-            images[11] = ImageIO.read(getClass().getResourceAsStream("/bahan/susu.png"));
-            images[12] = ImageIO.read(getClass().getResourceAsStream("/bahan/tomat.png"));
-            images[13] = ImageIO.read(getClass().getResourceAsStream("/bahan/kopi.png"));
+            images[6] = ImageIO.read(getClass().getResourceAsStream("/bahan/melon.png"));
+            images[7] = ImageIO.read(getClass().getResourceAsStream("/bahan/minyak.png"));
+            images[8] = ImageIO.read(getClass().getResourceAsStream("/bahan/sawi.png"));
+            images[9] = ImageIO.read(getClass().getResourceAsStream("/bahan/susu.png"));
+            images[10] = ImageIO.read(getClass().getResourceAsStream("/bahan/kopi.png"));
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -168,9 +159,9 @@ public class DapurScene extends JPanel {
             "Harga (persepuluh)"
         };
 
-        Object[][] data = new Object[14][3];
+        Object[][] data = new Object[11][3];
 
-        for (int i = 0; i < 14; i++) {
+        for (int i = 0; i < 11; i++) {
 
             BufferedImage img = images[i];
 
