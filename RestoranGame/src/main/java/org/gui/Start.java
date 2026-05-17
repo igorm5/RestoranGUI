@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package org.gui;
 
 import javax.swing.*;
@@ -35,7 +31,7 @@ public class Start extends JPanel {
         startBtn.setBounds(275, 250, 220, 80);
 
         startBtn.addActionListener(e -> {
-            frame.showPanel("restoran");
+            frame.getCtrl().newGame();
         });
 
         add(startBtn);
@@ -48,7 +44,7 @@ public class Start extends JPanel {
         loadBtn.setBounds(275, 270, 220, 160);
 
         loadBtn.addActionListener(e -> {
-            System.out.println("Load game...");
+            frame.getCtrl().loadGame();
         });
 
         add(loadBtn);

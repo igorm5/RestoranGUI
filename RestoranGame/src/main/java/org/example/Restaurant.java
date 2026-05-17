@@ -32,6 +32,7 @@ public class Restaurant {
     public int getCapacity() { return capacity; }
     public List<Sellable> getMenu() { return menuList; }
     public Map<String, Integer> getInventory() { return inventory; }
+    public List<Charm> getActiveCharms() { return activeCharms; }
     
     public void ratDisaster() {
         double preventChance = 0;
