@@ -56,6 +56,7 @@ public class MainFrame extends JFrame {
         add(container);
         cardLayout.show(container, "menu");
 
+        container.setPreferredSize(new Dimension(680, 520));
         pack();
         setLocationRelativeTo(null);
         setResizable(false);
@@ -95,3 +96,5 @@ public class MainFrame extends JFrame {
 
     public GameController getCtrl() { return ctrl; }
 }
+
+

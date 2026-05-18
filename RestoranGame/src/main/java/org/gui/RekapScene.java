@@ -34,16 +34,18 @@ public class RekapScene extends JPanel {
         gc.insets = new Insets(10, 20, 10, 20);
         gc.anchor = GridBagConstraints.WEST;
         gc.fill = GridBagConstraints.HORIZONTAL;
-        gc.gridx = 0; gc.gridy = 0; gc.gridwidth = 2;
+        gc.gridx = 0;
+        gc.gridy = 0;
+        gc.gridwidth = 2;
 
-        lblHari       = makeLabel("Hari ke-1",           Color.YELLOW, 16);
-        lblPendapatan = makeLabel("Pendapatan : Rp0",    Color.GREEN,  14);
-        lblKerugian   = makeLabel("Kerugian bencana: Rp0", new Color(255,100,100), 14);
-        lblBasi       = makeLabel("Bahan basi dibuang: Rp0", new Color(255,150,50), 14);
-        lblSaldo      = makeLabel("Saldo akhir  : Rp0", Color.WHITE,  16);
+        lblHari = makeLabel("Hari ke-1", Color.YELLOW, 12);
+        lblPendapatan = makeLabel("Pendapatan : Rp0", Color.GREEN, 10);
+        lblKerugian = makeLabel("Kerugian bencana: Rp0", new Color(255, 100, 100), 10);
+        lblBasi = makeLabel("Bahan basi dibuang: Rp0", new Color(255, 150, 50), 10);
+        lblSaldo = makeLabel("Saldo akhir  : Rp0", Color.WHITE, 12);
 
         JLabel[] rows = { lblHari, lblPendapatan, lblKerugian, lblBasi,
-                          makeLabel("──────────────────────", new Color(100,200,100), 12), lblSaldo };
+                makeLabel("──────────────────────", new Color(100, 200, 100), 12), lblSaldo };
         for (int i = 0; i < rows.length; i++) {
             gc.gridy = i;
             center.add(rows[i], gc);
@@ -62,12 +64,12 @@ public class RekapScene extends JPanel {
         logArea.setFont(new Font("Monospaced", Font.PLAIN, 11));
         JScrollPane logScroll = new JScrollPane(logArea);
         logScroll.setBorder(BorderFactory.createTitledBorder(
-            BorderFactory.createLineBorder(new Color(100,200,100)),
-            "Log Hari Ini", 0, 0, new Font("Arial",Font.BOLD,11), Color.GREEN));
+                BorderFactory.createLineBorder(new Color(100, 200, 100)),
+                "Log Hari Ini", 0, 0, new Font("Arial", Font.BOLD, 11), Color.GREEN));
         bottom.add(logScroll, BorderLayout.CENTER);
 
         JButton btnLanjut = makeButton("Lanjut ke Hari Berikutnya ▶", new Color(60, 160, 60));
-        btnLanjut.setFont(new Font("Arial", Font.BOLD, 14));
+        btnLanjut.setFont(new Font("Monospaced", Font.BOLD, 14));
         btnLanjut.setPreferredSize(new Dimension(300, 50));
         btnLanjut.addActionListener(e -> ctrl.nextDay());
         bottom.add(btnLanjut, BorderLayout.EAST);
@@ -84,20 +86,26 @@ public class RekapScene extends JPanel {
         lblSaldo.setText("Saldo akhir    : Rp" + saldo);
 
         logArea.setText("");
-        for (String line : log) logArea.append(line + "\n");
+        for (String line : log)
+            logArea.append(line + "\n");
         logArea.setCaretPosition(0);
         repaint();
     }
 
     private JLabel makeLabel(String t, Color c, int s) {
-        JLabel l = new JLabel(t); l.setForeground(c); l.setFont(new Font("Arial", Font.BOLD, s)); return l;
+        JLabel l = new JLabel(t);
+        l.setForeground(c);
+        l.setFont(FontUtil.loadFont((float) s));
+        return l;
     }
 
     private JButton makeButton(String t, Color bg) {
         JButton b = new JButton(t);
-        b.setBackground(bg); b.setForeground(Color.WHITE);
+        b.setBackground(bg);
+        b.setForeground(Color.WHITE);
         b.setFont(new Font("Arial", Font.BOLD, 12));
-        b.setFocusPainted(false); b.setBorderPainted(false);
+        b.setFocusPainted(false);
+        b.setBorderPainted(false);
         b.setCursor(new Cursor(Cursor.HAND_CURSOR));
         return b;
     }

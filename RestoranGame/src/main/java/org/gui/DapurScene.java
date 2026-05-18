@@ -370,24 +370,7 @@ public class DapurScene extends JPanel {
         );
     }
 
-    private Font loadFont(float size) {
-
-        try {
-
-            Font font = Font.createFont(
-                    Font.TRUETYPE_FONT,
-                    getClass().getResourceAsStream("/fonts/PressStart.ttf")
-            );
-
-            return font.deriveFont(size);
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-
-            return new Font("Arial", Font.BOLD, (int) size);
-        }
-    }
+    private Font loadFont(float size) { return FontUtil.loadFont(size); }
 
     private void setupImageButton(JButton button, String path) {
 
@@ -594,3 +577,5 @@ public class DapurScene extends JPanel {
         repaint();
     }
 }
+
+

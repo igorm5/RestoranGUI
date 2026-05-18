@@ -117,12 +117,7 @@ public class Level1Scene extends JPanel implements LevelScene {
     g2.drawString(value, x + 40, y + 23);
 }
 
-    private Font loadFont(float size) {
-        try {
-            return Font.createFont(Font.TRUETYPE_FONT,
-                getClass().getResourceAsStream("/fonts/PressStart.ttf")).deriveFont(size);
-        } catch (Exception e) { return new Font("Arial", Font.BOLD, (int) size); }
-    }
+    private Font loadFont(float size) { return FontUtil.loadFont(size); }
 
     private void setupMenuButton(JButton button, String path) {
         try {
@@ -142,7 +137,7 @@ public class Level1Scene extends JPanel implements LevelScene {
 
     private JButton makeButton(String t, Color bg) {
         JButton b = new JButton(t); b.setBackground(bg); b.setForeground(Color.WHITE);
-        b.setFont(new Font("Arial", Font.BOLD, 12)); b.setFocusPainted(false); b.setBorderPainted(false);
+        b.setFont(FontUtil.loadFont((float)12)); b.setFocusPainted(false); b.setBorderPainted(false);
         return b;
     }
 
@@ -151,3 +146,5 @@ public class Level1Scene extends JPanel implements LevelScene {
     @Override public void setStok(int stok)           { this.stok = stok; repaint(); }
     @Override public void setTimerText(String t)      { this.timerText = t; repaint(); }
 }
+
+

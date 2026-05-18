@@ -5,540 +5,502 @@ import javax.swing.*;
 
 public class PopUpScene {
 
-    public static void tikus(Component parent) {
+        public static void tikus(Component parent) {
 
-        // PANEL UTAMA
-        JDialog dialog = new JDialog();
+                // PANEL UTAMA
+                JDialog dialog = new JDialog();
 
-        dialog.setUndecorated(true);
+                dialog.setUndecorated(true);
 
-        dialog.setBackground(new Color(0, 0, 0, 0));
+                dialog.setBackground(new Color(0, 0, 0, 0));
 
-        dialog.setSize(350, 250);
+                dialog.setSize(350, 250);
 
-        dialog.setLocationRelativeTo(parent);
-
-        // BACKGROUND
-        JPanel panel = new JPanel() {
-
-            @Override
-            protected void paintComponent(Graphics g) {
-
-                super.paintComponent(g);
-
-                Graphics2D g2 = (Graphics2D) g;
-
-                g2.setRenderingHint(
-                        RenderingHints.KEY_ANTIALIASING,
-                        RenderingHints.VALUE_ANTIALIAS_ON
-                );
+                dialog.setLocationRelativeTo(parent);
 
                 // BACKGROUND
-                g2.setColor(new Color(0, 0, 0));
+                JPanel panel = new JPanel() {
 
-                g2.fillRoundRect(
-                        0,
-                        0,
-                        getWidth(),
-                        getHeight(),
-                        40,
-                        40
-                );
+                        @Override
+                        protected void paintComponent(Graphics g) {
 
-                // OUTLINE
-                g2.setColor(Color.WHITE);
+                                super.paintComponent(g);
 
-                g2.setStroke(new BasicStroke(5));
+                                Graphics2D g2 = (Graphics2D) g;
 
-                g2.drawRoundRect(
-                        2,
-                        2,
-                        getWidth() - 5,
-                        getHeight() - 5,
-                        40,
-                        40
-                );
-            }
-        };
+                                g2.setRenderingHint(
+                                                RenderingHints.KEY_ANTIALIASING,
+                                                RenderingHints.VALUE_ANTIALIAS_ON);
 
-        panel.setOpaque(false);
+                                // BACKGROUND
+                                g2.setColor(new Color(0, 0, 0));
 
-        panel.setLayout(null);
+                                g2.fillRoundRect(
+                                                0,
+                                                0,
+                                                getWidth(),
+                                                getHeight(),
+                                                40,
+                                                40);
 
-        // GAMBAR
-        ImageIcon icon = new ImageIcon(
-                PopUpScene.class.getResource("/lainnya/tikus.png")
-        );
+                                // OUTLINE
+                                g2.setColor(Color.WHITE);
 
-        Image img = icon.getImage().getScaledInstance(
-                250,
-                180,
-                Image.SCALE_SMOOTH
-        );
+                                g2.setStroke(new BasicStroke(5));
 
-        JLabel imageLabel = new JLabel(new ImageIcon(img));
+                                g2.drawRoundRect(
+                                                2,
+                                                2,
+                                                getWidth() - 5,
+                                                getHeight() - 5,
+                                                40,
+                                                40);
+                        }
+                };
 
-        imageLabel.setBounds(115, 40, 120, 120);
+                panel.setOpaque(false);
 
-        panel.add(imageLabel);
+                panel.setLayout(null);
 
-        // TEXT
-        JLabel text = new JLabel(
-                "Tikus Menyerang!",
-                SwingConstants.CENTER
-        );
+                // GAMBAR
+                ImageIcon icon = new ImageIcon(
+                                PopUpScene.class.getResource("/lainnya/tikus.png"));
 
-        text.setForeground(Color.WHITE);
+                Image img = icon.getImage().getScaledInstance(
+                                250,
+                                180,
+                                Image.SCALE_SMOOTH);
 
-        text.setFont(loadFont(18f));
+                JLabel imageLabel = new JLabel(new ImageIcon(img));
 
-        text.setBounds(25, 160, 300, 40);
+                imageLabel.setBounds(115, 40, 120, 120);
 
-        panel.add(text);
+                panel.add(imageLabel);
 
-        dialog.add(panel);
+                // TEXT
+                JLabel text = new JLabel(
+                                "Tikus Menyerang!",
+                                SwingConstants.CENTER);
 
-        dialog.setVisible(true);
+                text.setForeground(Color.WHITE);
 
-        // AUTO CLOSE 3 DETIK
-        Timer timer = new Timer(10000, e -> {
-            dialog.dispose();
-        });
+                text.setFont(loadFont(18f));
 
-        timer.setRepeats(false);
+                text.setBounds(25, 160, 300, 40);
 
-        timer.start();
-    }
-    
-    public static void pelanggankabur(Component parent) {
+                panel.add(text);
 
-        // PANEL UTAMA
-        JDialog dialog = new JDialog();
+                dialog.add(panel);
 
-        dialog.setUndecorated(true);
+                dialog.setVisible(true);
 
-        dialog.setBackground(new Color(0, 0, 0, 0));
+                // AUTO CLOSE 3 DETIK
+                Timer timer = new Timer(10000, e -> {
+                        dialog.dispose();
+                });
 
-        dialog.setSize(350, 250);
+                timer.setRepeats(false);
 
-        dialog.setLocationRelativeTo(parent);
+                timer.start();
+        }
 
-        // BACKGROUND
-        JPanel panel = new JPanel() {
+        public static void pelanggankabur(Component parent) {
 
-            @Override
-            protected void paintComponent(Graphics g) {
+                // PANEL UTAMA
+                JDialog dialog = new JDialog();
 
-                super.paintComponent(g);
+                dialog.setUndecorated(true);
 
-                Graphics2D g2 = (Graphics2D) g;
+                dialog.setBackground(new Color(0, 0, 0, 0));
 
-                g2.setRenderingHint(
-                        RenderingHints.KEY_ANTIALIASING,
-                        RenderingHints.VALUE_ANTIALIAS_ON
-                );
+                dialog.setSize(350, 250);
+
+                dialog.setLocationRelativeTo(parent);
 
                 // BACKGROUND
-                g2.setColor(new Color(0, 0, 0));
+                JPanel panel = new JPanel() {
 
-                g2.fillRoundRect(
-                        0,
-                        0,
-                        getWidth(),
-                        getHeight(),
-                        40,
-                        40
-                );
+                        @Override
+                        protected void paintComponent(Graphics g) {
 
-                // OUTLINE
-                g2.setColor(Color.WHITE);
+                                super.paintComponent(g);
 
-                g2.setStroke(new BasicStroke(5));
+                                Graphics2D g2 = (Graphics2D) g;
 
-                g2.drawRoundRect(
-                        2,
-                        2,
-                        getWidth() - 5,
-                        getHeight() - 5,
-                        40,
-                        40
-                );
-            }
-        };
+                                g2.setRenderingHint(
+                                                RenderingHints.KEY_ANTIALIASING,
+                                                RenderingHints.VALUE_ANTIALIAS_ON);
 
-        panel.setOpaque(false);
+                                // BACKGROUND
+                                g2.setColor(new Color(0, 0, 0));
 
-        panel.setLayout(null);
-        
-        // GAMBAR
-        ImageIcon icon = new ImageIcon(
-                PopUpScene.class.getResource("/lainnya/orang.png")
-        );
+                                g2.fillRoundRect(
+                                                0,
+                                                0,
+                                                getWidth(),
+                                                getHeight(),
+                                                40,
+                                                40);
 
-        Image img = icon.getImage().getScaledInstance(
-                250,
-                250,
-                Image.SCALE_SMOOTH
-        );
+                                // OUTLINE
+                                g2.setColor(Color.WHITE);
 
-        JLabel imageLabel = new JLabel(new ImageIcon(img));
+                                g2.setStroke(new BasicStroke(5));
 
-        imageLabel.setBounds(115, 40, 120, 120);
+                                g2.drawRoundRect(
+                                                2,
+                                                2,
+                                                getWidth() - 5,
+                                                getHeight() - 5,
+                                                40,
+                                                40);
+                        }
+                };
 
-        panel.add(imageLabel);
+                panel.setOpaque(false);
 
+                panel.setLayout(null);
 
-        // TEXT
-        JLabel text = new JLabel(
-                "PELANGGAN KABUR!",
-                SwingConstants.CENTER
-        );
+                // GAMBAR
+                ImageIcon icon = new ImageIcon(
+                                PopUpScene.class.getResource("/lainnya/orang.png"));
 
-        text.setForeground(Color.WHITE);
+                Image img = icon.getImage().getScaledInstance(
+                                250,
+                                250,
+                                Image.SCALE_SMOOTH);
 
-        text.setFont(loadFont(18f));
+                JLabel imageLabel = new JLabel(new ImageIcon(img));
 
-        text.setBounds(25, 160, 300, 40);
+                imageLabel.setBounds(115, 40, 120, 120);
 
-        panel.add(text);
+                panel.add(imageLabel);
 
-        dialog.add(panel);
+                // TEXT
+                JLabel text = new JLabel(
+                                "PELANGGAN KABUR!",
+                                SwingConstants.CENTER);
 
-        dialog.setVisible(true);
+                text.setForeground(Color.WHITE);
 
-        // AUTO CLOSE 3 DETIK
-        Timer timer = new Timer(10000, e -> {
-            dialog.dispose();
-        });
+                text.setFont(loadFont(18f));
 
-        timer.setRepeats(false);
+                text.setBounds(25, 160, 300, 40);
 
-        timer.start();
-    }
+                panel.add(text);
 
-    public static void beliStok(Component parent) {
+                dialog.add(panel);
 
-        // DIALOG
-        JDialog dialog = new JDialog();
+                dialog.setVisible(true);
 
-        dialog.setUndecorated(true);
+                // AUTO CLOSE 3 DETIK
+                Timer timer = new Timer(10000, e -> {
+                        dialog.dispose();
+                });
 
-        dialog.setBackground(new Color(0, 0, 0, 0));
+                timer.setRepeats(false);
 
-        dialog.setSize(450, 250);
+                timer.start();
+        }
 
-        dialog.setLocationRelativeTo(parent);
+        public static void beliStok(Component parent) {
 
-        // PANEL
-        JPanel panel = new JPanel() {
+                // DIALOG
+                JDialog dialog = new JDialog();
 
-            @Override
-            protected void paintComponent(Graphics g) {
+                dialog.setUndecorated(true);
 
-                super.paintComponent(g);
+                dialog.setBackground(new Color(0, 0, 0, 0));
 
-                Graphics2D g2 = (Graphics2D) g;
+                dialog.setSize(450, 250);
 
-                g2.setRenderingHint(
-                        RenderingHints.KEY_ANTIALIASING,
-                        RenderingHints.VALUE_ANTIALIAS_ON
-                );
+                dialog.setLocationRelativeTo(parent);
 
-                // BACKGROUND
-                g2.setColor(new Color(0, 0, 0));
+                // PANEL
+                JPanel panel = new JPanel() {
 
-                g2.fillRoundRect(
-                        0,
-                        0,
-                        getWidth(),
-                        getHeight(),
-                        40,
-                        40
-                );
+                        @Override
+                        protected void paintComponent(Graphics g) {
 
-                // OUTLINE
-                g2.setColor(Color.WHITE);
+                                super.paintComponent(g);
 
-                g2.setStroke(new BasicStroke(5));
+                                Graphics2D g2 = (Graphics2D) g;
 
-                g2.drawRoundRect(
-                        2,
-                        2,
-                        getWidth() - 5,
-                        getHeight() - 5,
-                        40,
-                        40
-                );
-            }
-        };
+                                g2.setRenderingHint(
+                                                RenderingHints.KEY_ANTIALIASING,
+                                                RenderingHints.VALUE_ANTIALIAS_ON);
 
-        panel.setOpaque(false);
+                                // BACKGROUND
+                                g2.setColor(new Color(0, 0, 0));
 
-        panel.setLayout(null);
+                                g2.fillRoundRect(
+                                                0,
+                                                0,
+                                                getWidth(),
+                                                getHeight(),
+                                                40,
+                                                40);
 
-        // TEXT
-        JLabel text = new JLabel(
-                "BELI BAHAN INI?",
-                SwingConstants.CENTER
-        );
+                                // OUTLINE
+                                g2.setColor(Color.WHITE);
 
-        text.setForeground(Color.WHITE);
+                                g2.setStroke(new BasicStroke(5));
 
-        text.setFont(loadFont(18f));
+                                g2.drawRoundRect(
+                                                2,
+                                                2,
+                                                getWidth() - 5,
+                                                getHeight() - 5,
+                                                40,
+                                                40);
+                        }
+                };
 
-        text.setBounds(40, 40, 370, 40);
+                panel.setOpaque(false);
 
-        panel.add(text);
+                panel.setLayout(null);
 
-        JButton yesBtn = new JButton();
+                // TEXT
+                JLabel text = new JLabel(
+                                "BELI BAHAN INI?",
+                                SwingConstants.CENTER);
 
-        setupImageButton(
-                yesBtn,
-                "/buttons/beli.png"
-        );
+                text.setForeground(Color.WHITE);
 
-        yesBtn.setBounds(70, 120, 130, 60);
+                text.setFont(loadFont(18f));
 
-        yesBtn.addActionListener(e -> {
+                text.setBounds(40, 40, 370, 40);
 
-            System.out.println("YES");
+                panel.add(text);
 
-            dialog.dispose();
-        });
+                JButton yesBtn = new JButton();
 
-        panel.add(yesBtn);
+                setupImageButton(
+                                yesBtn,
+                                "/buttons/beli.png");
 
-        JButton noBtn = new JButton();
+                yesBtn.setBounds(70, 120, 130, 60);
 
-        setupImageButton(
-                noBtn,
-                "/buttons/batal.png"
-        );
+                yesBtn.addActionListener(e -> {
 
-        noBtn.setBounds(250, 120, 130, 60);
+                        System.out.println("YES");
 
-        noBtn.addActionListener(e -> {
+                        dialog.dispose();
+                });
 
-            System.out.println("NO");
+                panel.add(yesBtn);
 
-            dialog.dispose();
-        });
+                JButton noBtn = new JButton();
 
-        panel.add(noBtn);
+                setupImageButton(
+                                noBtn,
+                                "/buttons/batal.png");
 
-        dialog.add(panel);
+                noBtn.setBounds(250, 120, 130, 60);
 
-        dialog.setVisible(true);
-    }
-    
-    public static void beliJimat(Component parent) {
+                noBtn.addActionListener(e -> {
 
-        // DIALOG
-        JDialog dialog = new JDialog();
+                        System.out.println("NO");
 
-        dialog.setUndecorated(true);
+                        dialog.dispose();
+                });
 
-        dialog.setBackground(new Color(0, 0, 0, 0));
+                panel.add(noBtn);
 
-        dialog.setSize(450, 250);
+                dialog.add(panel);
 
-        dialog.setLocationRelativeTo(parent);
+                dialog.setVisible(true);
+        }
 
-        // PANEL
-        JPanel panel = new JPanel() {
+        public static void beliJimat(Component parent) {
 
-            @Override
-            protected void paintComponent(Graphics g) {
+                // DIALOG
+                JDialog dialog = new JDialog();
 
-                super.paintComponent(g);
+                dialog.setUndecorated(true);
 
-                Graphics2D g2 = (Graphics2D) g;
+                dialog.setBackground(new Color(0, 0, 0, 0));
 
-                g2.setRenderingHint(
-                        RenderingHints.KEY_ANTIALIASING,
-                        RenderingHints.VALUE_ANTIALIAS_ON
-                );
+                dialog.setSize(450, 250);
 
-                // BACKGROUND
-                g2.setColor(new Color(0, 0, 0));
+                dialog.setLocationRelativeTo(parent);
 
-                g2.fillRoundRect(
-                        0,
-                        0,
-                        getWidth(),
-                        getHeight(),
-                        40,
-                        40
-                );
+                // PANEL
+                JPanel panel = new JPanel() {
 
-                // OUTLINE
-                g2.setColor(Color.WHITE);
+                        @Override
+                        protected void paintComponent(Graphics g) {
 
-                g2.setStroke(new BasicStroke(5));
+                                super.paintComponent(g);
 
-                g2.drawRoundRect(
-                        2,
-                        2,
-                        getWidth() - 5,
-                        getHeight() - 5,
-                        40,
-                        40
-                );
-            }
-        };
+                                Graphics2D g2 = (Graphics2D) g;
 
-        panel.setOpaque(false);
+                                g2.setRenderingHint(
+                                                RenderingHints.KEY_ANTIALIASING,
+                                                RenderingHints.VALUE_ANTIALIAS_ON);
 
-        panel.setLayout(null);
+                                // BACKGROUND
+                                g2.setColor(new Color(0, 0, 0));
 
-        // TEXT
-        JLabel text = new JLabel(
-                "BELI JIMAT?",
-                SwingConstants.CENTER
-        );
+                                g2.fillRoundRect(
+                                                0,
+                                                0,
+                                                getWidth(),
+                                                getHeight(),
+                                                40,
+                                                40);
 
-        text.setForeground(Color.WHITE);
+                                // OUTLINE
+                                g2.setColor(Color.WHITE);
 
-        text.setFont(loadFont(18f));
+                                g2.setStroke(new BasicStroke(5));
 
-        text.setBounds(40, 40, 370, 40);
+                                g2.drawRoundRect(
+                                                2,
+                                                2,
+                                                getWidth() - 5,
+                                                getHeight() - 5,
+                                                40,
+                                                40);
+                        }
+                };
 
-        panel.add(text);
+                panel.setOpaque(false);
 
-        JButton yesBtn = new JButton();
+                panel.setLayout(null);
 
-        setupImageButton(
-                yesBtn,
-                "/buttons/beli.png"
-        );
+                // TEXT
+                JLabel text = new JLabel(
+                                "BELI JIMAT?",
+                                SwingConstants.CENTER);
 
-        yesBtn.setBounds(70, 120, 130, 60);
+                text.setForeground(Color.WHITE);
 
-        yesBtn.addActionListener(e -> {
+                text.setFont(loadFont(18f));
 
-            System.out.println("YES");
+                text.setBounds(40, 40, 370, 40);
 
-            dialog.dispose();
-        });
+                panel.add(text);
 
-        panel.add(yesBtn);
+                JButton yesBtn = new JButton();
 
-        JButton noBtn = new JButton();
+                setupImageButton(
+                                yesBtn,
+                                "/buttons/beli.png");
 
-        setupImageButton(
-                noBtn,
-                "/buttons/batal.png"
-        );
+                yesBtn.setBounds(70, 120, 130, 60);
 
-        noBtn.setBounds(250, 120, 130, 60);
+                yesBtn.addActionListener(e -> {
 
-        noBtn.addActionListener(e -> {
+                        System.out.println("YES");
 
-            System.out.println("NO");
+                        dialog.dispose();
+                });
 
-            dialog.dispose();
-        });
+                panel.add(yesBtn);
 
-        panel.add(noBtn);
+                JButton noBtn = new JButton();
 
-        dialog.add(panel);
+                setupImageButton(
+                                noBtn,
+                                "/buttons/batal.png");
 
-        dialog.setVisible(true);
-    }
+                noBtn.setBounds(250, 120, 130, 60);
 
-    
+                noBtn.addActionListener(e -> {
 
-    private static void setupImageButton(
-            JButton button,
-            String path
-    ) {
+                        System.out.println("NO");
 
-        ImageIcon originalIcon = new ImageIcon(
-                PopUpScene.class.getResource(path)
-        );
+                        dialog.dispose();
+                });
 
-        int width = 130;
-        int height = 60;
+                panel.add(noBtn);
 
-        // NORMAL
-        Image normalImg = originalIcon.getImage()
-                .getScaledInstance(
-                        width,
-                        height,
-                        Image.SCALE_SMOOTH
-                );
+                dialog.add(panel);
 
-        // HOVER
-        Image hoverImg = originalIcon.getImage()
-                .getScaledInstance(
-                        120,
-                        55,
-                        Image.SCALE_SMOOTH
-                );
+                dialog.setVisible(true);
+        }
 
-        ImageIcon normalIcon
-                = new ImageIcon(normalImg);
+        private static void setupImageButton(
+                        JButton button,
+                        String path) {
 
-        ImageIcon hoverIcon
-                = new ImageIcon(hoverImg);
+                ImageIcon originalIcon = new ImageIcon(
+                                PopUpScene.class.getResource(path));
 
-        button.setIcon(normalIcon);
+                int width = 130;
+                int height = 60;
 
-        // STYLE
-        button.setBorderPainted(false);
+                // NORMAL
+                Image normalImg = originalIcon.getImage()
+                                .getScaledInstance(
+                                                width,
+                                                height,
+                                                Image.SCALE_SMOOTH);
 
-        button.setContentAreaFilled(false);
+                // HOVER
+                Image hoverImg = originalIcon.getImage()
+                                .getScaledInstance(
+                                                120,
+                                                55,
+                                                Image.SCALE_SMOOTH);
 
-        button.setFocusPainted(false);
+                ImageIcon normalIcon = new ImageIcon(normalImg);
 
-        button.setOpaque(false);
-
-        // HOVER EFFECT
-        button.addMouseListener(
-                new java.awt.event.MouseAdapter() {
-
-            @Override
-            public void mouseEntered(
-                    java.awt.event.MouseEvent evt
-            ) {
-
-                button.setIcon(hoverIcon);
-            }
-
-            @Override
-            public void mouseExited(
-                    java.awt.event.MouseEvent evt
-            ) {
+                ImageIcon hoverIcon = new ImageIcon(hoverImg);
 
                 button.setIcon(normalIcon);
-            }
-        });
-    }
 
-    // LOAD FONT
-    private static Font loadFont(float size) {
+                // STYLE
+                button.setBorderPainted(false);
 
-        try {
+                button.setContentAreaFilled(false);
 
-            Font font = Font.createFont(
-                    Font.TRUETYPE_FONT,
-                    PopUpScene.class.getResourceAsStream(
-                            "/fonts/PressStart.ttf"
-                    )
-            );
+                button.setFocusPainted(false);
 
-            return font.deriveFont(size);
+                button.setOpaque(false);
 
-        } catch (Exception e) {
+                // HOVER EFFECT
+                button.addMouseListener(
+                                new java.awt.event.MouseAdapter() {
 
-            e.printStackTrace();
+                                        @Override
+                                        public void mouseEntered(
+                                                        java.awt.event.MouseEvent evt) {
 
-            return new Font(
-                    "Arial",
-                    Font.BOLD,
-                    (int) size
-            );
+                                                button.setIcon(hoverIcon);
+                                        }
+
+                                        @Override
+                                        public void mouseExited(
+                                                        java.awt.event.MouseEvent evt) {
+
+                                                button.setIcon(normalIcon);
+                                        }
+                                });
         }
-    }
+
+        // LOAD FONT
+        private static Font loadFont(float size) {
+
+                try {
+
+                        Font font = Font.createFont(
+                                        Font.TRUETYPE_FONT,
+                                        PopUpScene.class.getResourceAsStream(
+                                                        "/fonts/PressStart.ttf"));
+
+                        return font.deriveFont(size);
+
+                } catch (Exception e) {
+
+                        e.printStackTrace();
+
+                        return new Font(
+                                        "Arial",
+                                        Font.BOLD,
+                                        (int) size);
+                }
+        }
 
 }

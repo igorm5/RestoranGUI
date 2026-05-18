@@ -5,3 +5,5 @@ public interface LevelScene {
     void setStok(int stok);
     void setTimerText(String timer);
 }
+
+
