@@ -31,14 +31,13 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
 import org.controller.GameController;
-import org.example.Sellable;
+import org.model.Sellable;
 
 public class DapurScene extends JPanel {
 
     private GameController ctrl;
     private JLabel lblMoney;
     private JLabel lblStock;
-    private JLabel lblSelectedIngredient;
 
     String nama;
 
@@ -87,10 +86,8 @@ public class DapurScene extends JPanel {
 
         lblMoney = createInfoLabel("Uang: Rp0", 400, 10);
         lblStock = createInfoLabel("Stok: 0", 400, 30);
-        lblSelectedIngredient = createInfoLabel("Bahan terpilih: -", 400, 50);
         add(lblMoney);
         add(lblStock);
-        add(lblSelectedIngredient);
 
         JButton priceBtn = makeActionButton("Atur Harga Menu", 420, 250, 200, 40, new Color(120, 80, 180));
         priceBtn.addActionListener(e -> adjustMenuPrice());
@@ -370,7 +367,24 @@ public class DapurScene extends JPanel {
         );
     }
 
-    private Font loadFont(float size) { return FontUtil.loadFont(size); }
+    private Font loadFont(float size) {
+
+        try {
+
+            Font font = Font.createFont(
+                    Font.TRUETYPE_FONT,
+                    getClass().getResourceAsStream("/fonts/PressStart.ttf")
+            );
+
+            return font.deriveFont(size);
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+            return new Font("Arial", Font.BOLD, (int) size);
+        }
+    }
 
     private void setupImageButton(JButton button, String path) {
 
@@ -488,7 +502,7 @@ public class DapurScene extends JPanel {
 
         String jumlahInput = JOptionPane.showInputDialog(
                 this,
-                "Masukkan jumlah paket (1 paket = 10 unit):",
+                "Masukkan jumlah:",
                 "Beli Bahan",
                 JOptionPane.PLAIN_MESSAGE
         );
@@ -498,35 +512,34 @@ public class DapurScene extends JPanel {
         }
 
         try {
-            int paket = Integer.parseInt(jumlahInput.trim());
-            if (paket <= 0) {
-                JOptionPane.showMessageDialog(this, "Jumlah paket harus lebih besar dari 0.");
+            int jumlah = Integer.parseInt(jumlahInput.trim());
+            if (jumlah <= 0) {
+                JOptionPane.showMessageDialog(this, "Jumlah harus lebih besar dari 0.");
                 return;
             }
 
-            int quantity = paket * 10;
-            int unitPrice = Math.max(1, hargaPerSepuluh / 10);
-            boolean purchased = ctrl.beliStok(bahan, quantity, unitPrice);
+            int hargaPerUnit = Math.max(1, hargaPerSepuluh / 1);
+            int totalHarga = jumlah * hargaPerUnit;
+            boolean purchased = ctrl.beliStok(bahan, jumlah, hargaPerUnit);
             if (purchased) {
-                JOptionPane.showMessageDialog(this, "Berhasil membeli " + quantity + " " + bahan + "!");
-                lblSelectedIngredient.setText("Bahan terpilih: " + bahan);
+                JOptionPane.showMessageDialog(this, "Berhasil membeli " + jumlah + " unit " + bahan + " seharga Rp" + totalHarga + "!");
             } else {
                 JOptionPane.showMessageDialog(this, "Uang tidak cukup untuk membeli " + bahan + ".");
             }
             ctrl.refreshHUD();
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Masukkan angka valid untuk jumlah paket.");
+            JOptionPane.showMessageDialog(this, "Masukkan angka valid untuk jumlah unit.");
         }
     }
 
     private void adjustMenuPrice() {
-        java.util.List<Sellable> menu = ctrl.getCurrentMenu();
+        List<Sellable> menu = ctrl.getCurrentMenu();
         if (menu.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Menu belum tersedia.");
             return;
         }
 
-        String[] options = menu.stream().map(Sellable::getName).toArray(String[]::new);
+        String[] options = menu.stream().map(org.model.Sellable::getName).toArray(String[]::new);
         int selected = JOptionPane.showOptionDialog(
                 this,
                 "Pilih menu yang ingin diubah harganya:",
@@ -570,12 +583,10 @@ public class DapurScene extends JPanel {
             int uang,
             int stok,
             Map<String, Integer> inventory,
-            List<org.example.Sellable> menu
+            List<org.model.Sellable> menu
     ) {
         lblMoney.setText("Uang: Rp" + uang);
         lblStock.setText("Stok: " + stok);
         repaint();
     }
 }
-
-

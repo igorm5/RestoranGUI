@@ -13,6 +13,6 @@ import org.gui.*;
 public class Main {
     public static void main(String[] args) {
         // Cukup panggil MainFrame, dia yang akan mengatur segalanya
-        new MainFrame();
+        MainFrame mainFrame = new MainFrame();
     }
 }

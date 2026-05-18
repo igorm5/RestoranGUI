@@ -9,7 +9,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -20,12 +19,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import org.controller.GameController;
-import org.example.Charm;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 
 public class JimatScene extends JPanel {
 
@@ -52,8 +45,8 @@ public class JimatScene extends JPanel {
 
                 add(imageLabel);
 
-                lblMoney = createInfoLabel("Uang: Rp0", 520, 50);
-                lblCharms = createInfoLabel("Jimat aktif: 0", 520, 80);
+                lblMoney = createInfoLabel("Uang: Rp0", 280, 450);
+                lblCharms = createInfoLabel("Jimat aktif: 0", 280, 480);
                 add(lblMoney);
                 add(lblCharms);
 
@@ -241,7 +234,7 @@ public class JimatScene extends JPanel {
                 ctrl.refreshHUD();
         }
 
-        public void refresh(int uang, List<org.example.Charm> charms) {
+        public void refresh(int uang, java.util.List<org.model.Charm> charms) {
                 lblMoney.setText("Uang: Rp" + uang);
                 lblCharms.setText("Jimat aktif: " + charms.size());
                 repaint();

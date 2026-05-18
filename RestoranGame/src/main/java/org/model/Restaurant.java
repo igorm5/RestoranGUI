@@ -1,4 +1,4 @@
-package org.example;
+package org.model;
 
 import java.io.FileWriter;
 import java.io.IOException;

@@ -1,8 +1,23 @@
 package org.gui;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.util.List;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
+
 import org.controller.GameController;
 
 public class RekapScene extends JPanel {
@@ -45,7 +60,7 @@ public class RekapScene extends JPanel {
         lblSaldo = makeLabel("Saldo akhir  : Rp0", Color.WHITE, 12);
 
         JLabel[] rows = { lblHari, lblPendapatan, lblKerugian, lblBasi,
-                makeLabel("──────────────────────", new Color(100, 200, 100), 12), lblSaldo };
+                makeLabel("======================", new Color(100, 200, 100), 12), lblSaldo };
         for (int i = 0; i < rows.length; i++) {
             gc.gridy = i;
             center.add(rows[i], gc);

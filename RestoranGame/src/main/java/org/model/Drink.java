@@ -1,4 +1,4 @@
-package org.example;
+package org.model;
 
 public class Drink extends MenuItem {
     private String type; // coffee based, milk based, fruit based

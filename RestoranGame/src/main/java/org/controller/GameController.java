@@ -1,16 +1,31 @@
 package org.controller;
 
-import javax.swing.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import org.example.*;
-import org.gui.*;
+
+import javax.swing.Timer;
+
+import org.gui.DapurScene;
+import org.gui.JimatScene;
+import org.gui.LevelScene;
+import org.gui.MainFrame;
+import org.gui.RekapScene;
+import org.model.Charm;
+import org.model.CharmingCharm;
+import org.model.CleanerCharm;
+import org.model.Drink;
+import org.model.Food;
+import org.model.MenuItem;
+import org.model.OutOfStockException;
+import org.model.Restaurant;
+import org.model.SecurityCharm;
+import org.model.Sellable;
 
 /**
  * GameController: penghubung antara core logic (Restaurant) dan GUI.
@@ -18,7 +33,7 @@ import org.gui.*;
  */
 public class GameController {
 
-    // ─── State Game ───────────────────────────────────────────────────────────
+    // State Game 
     public enum Phase {
         PREPARATION, SELLING, RECAP
     }
@@ -27,11 +42,11 @@ public class GameController {
     private int currentDay = 1;
     private int currentLevel = 1;
 
-    // ─── Core Logic ───────────────────────────────────────────────────────────
+    // Core Logic 
     private Restaurant restaurant;
 
-    // ─── GUI References ───────────────────────────────────────────────────────
-    private MainFrame mainFrame;
+    // GUI References 
+    private final MainFrame mainFrame;
 
     private DapurScene dapurScene;
     private JimatScene jimatScene;
@@ -45,7 +60,6 @@ public class GameController {
     private int secondsLeft = 300; // 5 menit
     private int totalRevenue = 0;
     private int totalLoss = 0;
-    private int customersServed = 0;
     private boolean disasterTriggered = false;
 
     // ─── Menu per level ────────────────────────────────────────────────────────
@@ -77,7 +91,7 @@ public class GameController {
     };
 
     // ─── Rekap harian ─────────────────────────────────────────────────────────
-    private List<String> dailyLog = new ArrayList<>();
+    private final List<String> dailyLog = new ArrayList<>();
 
     // ─── Upgrade cost per level ────────────────────────────────────────────────
     private static final int[] UPGRADE_COST = { 0, 50000, 80000, 120000, 200000 };
@@ -255,18 +269,11 @@ public class GameController {
         if (restaurant.getMoney() < harga)
             return false;
         restaurant.addMoney(-harga);
-        Charm charm;
-        switch (tipeJimat) {
-            case "Charming":
-                charm = new CharmingCharm();
-                break;
-            case "Security":
-                charm = new SecurityCharm();
-                break;
-            default:
-                charm = new CleanerCharm();
-                break;
-        }
+        Charm charm = switch (tipeJimat) {
+            case "Charming" -> new CharmingCharm();
+            case "Security" -> new SecurityCharm();
+            default -> new CleanerCharm();
+        };
         restaurant.addCharm(charm);
         dailyLog.add("[JIMAT] " + charm.getName() + " dibeli (efek " +
                 String.format("%.1f", charm.getEffectPercentage()) + "%)");
@@ -307,7 +314,6 @@ public class GameController {
         secondsLeft = 300;
         totalRevenue = 0;
         totalLoss = 0;
-        customersServed = 0;
         disasterTriggered = false;
         dailyLog.add("=== HARI KE-" + currentDay + " DIMULAI ===");
 
@@ -336,7 +342,7 @@ public class GameController {
             }
 
             if (secondsLeft <= 0)
-                endSellingPhase(false);
+                endSellingPhase();
         });
         countdownTimer.start();
     }
@@ -349,7 +355,7 @@ public class GameController {
         int remainingCustomers = secondsLeft / 8;
         for (int i = 0; i < remainingCustomers; i++)
             spawnCustomerSilent();
-        endSellingPhase(true);
+        endSellingPhase();
     }
 
     private double getBasePrice(String name) {
@@ -379,8 +385,7 @@ public class GameController {
         }
 
         if (tooExpensiveChance > 0 && rand.nextDouble() * 100 < tooExpensiveChance) {
-            logLine = "💸 Pelanggan batal pesan " + menu.getName() + ",";
-            logLine = "terlalu mahal! (Rp" + (int) currentPrice + ")";
+            logLine = "💸 Pelanggan batal pesan " + menu.getName() + ", terlalu mahal! (Rp" + (int) currentPrice + ")";
             dailyLog.add(logLine);
             if (activeLevelScene != null)
                 activeLevelScene.setGameMessage(logLine);
@@ -396,7 +401,7 @@ public class GameController {
             if (rand.nextDouble() * 100 < (15 - secBonus)) {
                 // Kabur!
                 totalLoss += (int) menu.getPrice();
-                logLine = "❌ Pelanggan kabur setelah memesan " + menu.getName() + "!";
+                logLine = "Pelanggan kabur setelah memesan " + menu.getName() + "!";
                 mainFrame.showPopupKabur();
             } else {
                 // Tips (CharmingCharm)
@@ -408,8 +413,7 @@ public class GameController {
                 int earned = (int) menu.getPrice() + tips;
                 restaurant.addMoney(earned);
                 totalRevenue += earned;
-                customersServed++;
-                logLine = "✅ Pelanggan memesan " + menu.getName() +
+                logLine = "Pelanggan memesan " + menu.getName() +
                         " (+Rp" + (int) menu.getPrice() + (tips > 0 ? " +tips Rp" + tips : "") + ")";
             }
         } catch (OutOfStockException e) {
@@ -447,7 +451,7 @@ public class GameController {
             } else {
                 restaurant.addMoney(menu.getPrice());
                 totalRevenue += (int) menu.getPrice();
-                customersServed++;
+
             }
         } catch (OutOfStockException ignored) {
         }
@@ -495,7 +499,7 @@ public class GameController {
     }
 
     /** Hentikan fase penjualan dan pindah ke rekap */
-    private void endSellingPhase(boolean skipped) {
+    private void endSellingPhase() {
         if (customerTimer != null)
             customerTimer.stop();
         if (countdownTimer != null)
@@ -513,14 +517,14 @@ public class GameController {
         restaurant.saveProgress(currentDay, currentLevel);
 
         currentPhase = Phase.RECAP;
-        showRecap(skipped, basiLoss);
+        showRecap(basiLoss);
     }
 
     // ══════════════════════════════════════════════════════════════════════════
     // REKAP
     // ══════════════════════════════════════════════════════════════════════════
 
-    private void showRecap(boolean skipped, int basiLoss) {
+    private void showRecap(int basiLoss) {
         if (rekapScene != null) {
             rekapScene.update(currentDay, totalRevenue, totalLoss, basiLoss,
                     (int) restaurant.getMoney(), dailyLog);

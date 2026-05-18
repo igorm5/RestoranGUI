@@ -1,4 +1,4 @@
-package org.example;
+package org.model;
 
 public class Snack extends MenuItem {
     public Snack(String name, double price) {

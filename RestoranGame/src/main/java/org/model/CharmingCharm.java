@@ -1,4 +1,4 @@
-package org.example;
+package org.model;
 
 // Jimat untuk mendapatkan tips dari pelanggan
 public class CharmingCharm extends Charm {

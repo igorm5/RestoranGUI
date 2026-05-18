@@ -1,4 +1,4 @@
-package org.example;
+package org.model;
 
 // Jimat untuk mengurangi peluang tikus
 public class CleanerCharm extends Charm {

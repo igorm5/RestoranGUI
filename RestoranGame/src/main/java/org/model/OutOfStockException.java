@@ -1,4 +1,4 @@
-package org.example;
+package org.model;
 
 // Custom Exception bahan habis
 public class OutOfStockException extends Exception {
