@@ -19,11 +19,13 @@ import org.gui.*;
 public class GameController {
 
     // ─── State Game ───────────────────────────────────────────────────────────
-    public enum Phase { PREPARATION, SELLING, RECAP }
+    public enum Phase {
+        PREPARATION, SELLING, RECAP
+    }
 
     private Phase currentPhase = Phase.PREPARATION;
-    private int currentDay    = 1;
-    private int currentLevel  = 1;
+    private int currentDay = 1;
+    private int currentLevel = 1;
 
     // ─── Core Logic ───────────────────────────────────────────────────────────
     private Restaurant restaurant;
@@ -31,7 +33,6 @@ public class GameController {
     // ─── GUI References ───────────────────────────────────────────────────────
     private MainFrame mainFrame;
 
-  
     private DapurScene dapurScene;
     private JimatScene jimatScene;
     private RekapScene rekapScene;
@@ -39,40 +40,40 @@ public class GameController {
     private LevelScene activeLevelScene; // proxy ke Level1-5Scene
 
     // ─── Selling-phase state ───────────────────────────────────────────────────
-    private Timer customerTimer;       // timer munculnya pelanggan
-    private Timer countdownTimer;      // timer 5 menit
-    private int secondsLeft   = 300; // 5 menit
-    private int totalRevenue  = 0;
-    private int totalLoss     = 0;
+    private Timer customerTimer; // timer munculnya pelanggan
+    private Timer countdownTimer; // timer 5 menit
+    private int secondsLeft = 300; // 5 menit
+    private int totalRevenue = 0;
+    private int totalLoss = 0;
     private int customersServed = 0;
     private boolean disasterTriggered = false;
 
     // ─── Menu per level ────────────────────────────────────────────────────────
     // Tiap level membuka lebih banyak menu
     private static final String[][] LEVEL_MENUS = {
-        { "/menu/kopi.png" },
-        { "/menu/kopi.png", "/menu/nasiayam.png" },
-        { "/menu/kopi.png", "/menu/nasiayam.png", "/menu/kentanggoreng.png" },
-        { "/menu/kopi.png", "/menu/nasiayam.png", "/menu/kentanggoreng.png", "/menu/susu.png" },
-        { "/menu/kopi.png", "/menu/nasiayam.png", "/menu/kentanggoreng.png", "/menu/susu.png",
-          "/menu/jusjambu.png", "/menu/jusmelon.png" }
+            { "/menu/kopi.png" },
+            { "/menu/kopi.png", "/menu/nasiayam.png" },
+            { "/menu/kopi.png", "/menu/nasiayam.png", "/menu/kentanggoreng.png" },
+            { "/menu/kopi.png", "/menu/nasiayam.png", "/menu/kentanggoreng.png", "/menu/susu.png" },
+            { "/menu/kopi.png", "/menu/nasiayam.png", "/menu/kentanggoreng.png", "/menu/susu.png",
+                    "/menu/jusjambu.png", "/menu/jusmelon.png" }
     };
 
     private static final String[] MENU_NAMES = {
-        "Es Kopi Susu", "Nasi Ayam", "Kentang Goreng", "Susu Segar", "Jus Jambu", "Jus Melon"
+            "Es Kopi Susu", "Nasi Ayam", "Kentang Goreng", "Susu Segar", "Jus Jambu", "Jus Melon"
     };
 
     private static final int[] MENU_PRICES = {
-        15000, 25000, 12000, 10000, 18000, 18000
+            15000, 25000, 12000, 10000, 18000, 18000
     };
 
     private static final String[][] MENU_INGREDIENTS = {
-        { "Kopi", "Susu" },
-        { "Ayam", "Beras" },
-        { "Kentang", "Minyak" },
-        { "Susu" },
-        { "Jambu", "Gula" },
-        { "Melon", "Gula" }
+            { "Kopi", "Susu" },
+            { "Ayam", "Beras" },
+            { "Kentang", "Minyak" },
+            { "Susu" },
+            { "Jambu", "Gula" },
+            { "Melon", "Gula" }
     };
 
     // ─── Rekap harian ─────────────────────────────────────────────────────────
@@ -80,12 +81,12 @@ public class GameController {
 
     // ─── Upgrade cost per level ────────────────────────────────────────────────
     private static final int[] UPGRADE_COST = { 0, 50000, 80000, 120000, 200000 };
-    private static final int[] LEVEL_CAPACITY = {10, 15, 20, 25, 30};
+    private static final int[] LEVEL_CAPACITY = { 10, 15, 20, 25, 30 };
 
     public GameController(MainFrame frame) {
         // mainFrame() getter added below
 
-        this.mainFrame  = frame;
+        this.mainFrame = frame;
         this.restaurant = new Restaurant(100000, 10);
         setupMenuForLevel(currentLevel);
     }
@@ -102,7 +103,9 @@ public class GameController {
         mainFrame.showPanel("dapur");
     }
 
-    /** Muat game dari file savegame.txt (jika ada) dan lanjutkan ke fase persiapan */
+    /**
+     * Muat game dari file savegame.txt (jika ada) dan lanjutkan ke fase persiapan
+     */
     public void loadGame() {
         int day = 1;
         double money = 100000;
@@ -114,11 +117,16 @@ public class GameController {
             String line;
             boolean readingInventory = false;
             while ((line = br.readLine()) != null) {
-                if (line.startsWith("Day:")) day = Integer.parseInt(line.split(":")[1].trim());
-                else if (line.startsWith("Money:")) money = Double.parseDouble(line.split(":")[1].trim());
-                else if (line.startsWith("Capacity:")) capacity = Integer.parseInt(line.split(":")[1].trim());
-                else if (line.startsWith("Level:")) level = Integer.parseInt(line.split(":")[1].trim());
-                else if (line.startsWith("Inventory:")) readingInventory = true;
+                if (line.startsWith("Day:"))
+                    day = Integer.parseInt(line.split(":")[1].trim());
+                else if (line.startsWith("Money:"))
+                    money = Double.parseDouble(line.split(":")[1].trim());
+                else if (line.startsWith("Capacity:"))
+                    capacity = Integer.parseInt(line.split(":")[1].trim());
+                else if (line.startsWith("Level:"))
+                    level = Integer.parseInt(line.split(":")[1].trim());
+                else if (line.startsWith("Inventory:"))
+                    readingInventory = true;
                 else if (readingInventory && line.contains("=")) {
                     String[] parts = line.split("=");
                     if (parts.length == 2) {
@@ -147,14 +155,14 @@ public class GameController {
     }
 
     // ══════════════════════════════════════════════════════════════════════════
-    //  SETUP
+    // SETUP
     // ══════════════════════════════════════════════════════════════════════════
 
     /** Registrasi scene dari MainFrame setelah scene dibuat */
     public void registerScenes(DapurScene dapur, JimatScene jimat, RekapScene rekap) {
-        this.dapurScene  = dapur;
-        this.jimatScene  = jimat;
-        this.rekapScene  = rekap;
+        this.dapurScene = dapur;
+        this.jimatScene = jimat;
+        this.rekapScene = rekap;
     }
 
     public void setActiveLevelScene(LevelScene scene) {
@@ -169,27 +177,49 @@ public class GameController {
             String[] ingr = MENU_INGREDIENTS[i];
             if (i < 4) { // Food / Drink berdasarkan tipe
                 Food f = new Food(MENU_NAMES[i], MENU_PRICES[i]);
-                for (String ing : ingr) f.addIngredient(ing, 1);
+                for (String ing : ingr)
+                    f.addIngredient(ing, 1);
                 restaurant.addMenu(f);
             } else {
                 Drink d = new Drink(MENU_NAMES[i], MENU_PRICES[i], "fruit based");
-                for (String ing : ingr) d.addIngredient(ing, 1);
+                for (String ing : ingr)
+                    d.addIngredient(ing, 1);
                 restaurant.addMenu(d);
             }
         }
     }
 
     // ══════════════════════════════════════════════════════════════════════════
-    //  GETTERS UNTUK GUI
+    // GETTERS UNTUK GUI
     // ══════════════════════════════════════════════════════════════════════════
 
-    public int getCurrentLevel() { return currentLevel; }
-    public int getCurrentDay() { return currentDay; }
-    public double getMoney() { return restaurant.getMoney(); }
-    public int getStok() { return getTotalStock(); }
-    public Phase getCurrentPhase() { return currentPhase; }
-    public List<String> getDailyLog() { return dailyLog; }
-    public int getSecondsLeft() { return secondsLeft; }
+    public int getCurrentLevel() {
+        return currentLevel;
+    }
+
+    public int getCurrentDay() {
+        return currentDay;
+    }
+
+    public double getMoney() {
+        return restaurant.getMoney();
+    }
+
+    public int getStok() {
+        return getTotalStock();
+    }
+
+    public Phase getCurrentPhase() {
+        return currentPhase;
+    }
+
+    public List<String> getDailyLog() {
+        return dailyLog;
+    }
+
+    public int getSecondsLeft() {
+        return secondsLeft;
+    }
 
     /** Hitung total stok semua bahan */
     public int getTotalStock() {
@@ -205,13 +235,14 @@ public class GameController {
     }
 
     // ══════════════════════════════════════════════════════════════════════════
-    //  FASE PERSIAPAN – aksi pemain
+    // FASE PERSIAPAN – aksi pemain
     // ══════════════════════════════════════════════════════════════════════════
 
     /** Pemain membeli bahan baku di DapurScene / JimatScene */
     public boolean beliStok(String bahan, int jumlah, int hargaPerUnit) {
         double total = (double) jumlah * hargaPerUnit;
-        if (restaurant.getMoney() < total) return false;
+        if (restaurant.getMoney() < total)
+            return false;
         restaurant.addInventory(bahan, jumlah);
         restaurant.addMoney(-total);
         refreshHUD();
@@ -221,13 +252,20 @@ public class GameController {
     /** Pemain membeli jimat */
     public boolean beliJimat(String tipeJimat) {
         int harga = 30000;
-        if (restaurant.getMoney() < harga) return false;
+        if (restaurant.getMoney() < harga)
+            return false;
         restaurant.addMoney(-harga);
         Charm charm;
         switch (tipeJimat) {
-            case "Charming": charm = new CharmingCharm(); break;
-            case "Security": charm = new SecurityCharm(); break;
-            default:         charm = new CleanerCharm();  break;
+            case "Charming":
+                charm = new CharmingCharm();
+                break;
+            case "Security":
+                charm = new SecurityCharm();
+                break;
+            default:
+                charm = new CleanerCharm();
+                break;
         }
         restaurant.addCharm(charm);
         dailyLog.add("[JIMAT] " + charm.getName() + " dibeli (efek " +
@@ -245,9 +283,11 @@ public class GameController {
 
     /** Upgrade level restoran */
     public boolean upgradeLevel() {
-        if (currentLevel >= 5) return false;
+        if (currentLevel >= 5)
+            return false;
         int cost = UPGRADE_COST[currentLevel];
-        if (restaurant.getMoney() < cost) return false;
+        if (restaurant.getMoney() < cost)
+            return false;
         restaurant.addMoney(-cost);
         currentLevel++;
         restaurant.setCapacity(LEVEL_CAPACITY[currentLevel - 1]);
@@ -258,15 +298,15 @@ public class GameController {
     }
 
     // ══════════════════════════════════════════════════════════════════════════
-    //  FASE PENJUALAN
+    // FASE PENJUALAN
     // ══════════════════════════════════════════════════════════════════════════
 
     /** Dipanggil saat pemain tekan "Buka Restoran" */
     public void startSellingPhase() {
-        currentPhase    = Phase.SELLING;
-        secondsLeft     = 300;
-        totalRevenue    = 0;
-        totalLoss       = 0;
+        currentPhase = Phase.SELLING;
+        secondsLeft = 300;
+        totalRevenue = 0;
+        totalLoss = 0;
         customersServed = 0;
         disasterTriggered = false;
         dailyLog.add("=== HARI KE-" + currentDay + " DIMULAI ===");
@@ -295,27 +335,59 @@ public class GameController {
                 }
             }
 
-            if (secondsLeft <= 0) endSellingPhase(false);
+            if (secondsLeft <= 0)
+                endSellingPhase(false);
         });
         countdownTimer.start();
     }
 
     /** Pemain tekan tombol Skip */
     public void skipDay() {
-        if (currentPhase != Phase.SELLING) return;
+        if (currentPhase != Phase.SELLING)
+            return;
         // Hitung sisa pelanggan secara instan
         int remainingCustomers = secondsLeft / 8;
-        for (int i = 0; i < remainingCustomers; i++) spawnCustomerSilent();
+        for (int i = 0; i < remainingCustomers; i++)
+            spawnCustomerSilent();
         endSellingPhase(true);
+    }
+
+    private double getBasePrice(String name) {
+        for (int i = 0; i < MENU_NAMES.length; i++) {
+            if (MENU_NAMES[i].equals(name))
+                return MENU_PRICES[i];
+        }
+        return 0;
     }
 
     /** Munculkan satu pelanggan (dengan update GUI) */
     private void spawnCustomer() {
-        if (restaurant.getMenu().isEmpty()) return;
+        if (restaurant.getMenu().isEmpty())
+            return;
         Random rand = new Random();
         Sellable menu = restaurant.getMenu().get(rand.nextInt(restaurant.getMenu().size()));
 
         String logLine;
+
+        double basePrice = getBasePrice(menu.getName());
+        double currentPrice = menu.getPrice();
+        double priceRatio = basePrice > 0 ? currentPrice / basePrice : 1.0;
+
+        double tooExpensiveChance = 0;
+        if (priceRatio > 1.0) {
+            tooExpensiveChance = (priceRatio - 1.0) * 100.0 * 1.5;
+        }
+
+        if (tooExpensiveChance > 0 && rand.nextDouble() * 100 < tooExpensiveChance) {
+            logLine = "💸 Pelanggan batal pesan " + menu.getName() + ",";
+            logLine = "terlalu mahal! (Rp" + (int) currentPrice + ")";
+            dailyLog.add(logLine);
+            if (activeLevelScene != null)
+                activeLevelScene.setGameMessage(logLine);
+            refreshHUD();
+            return;
+        }
+
         try {
             menu.sell(restaurant.getInventory());
 
@@ -331,29 +403,42 @@ public class GameController {
                 double tipsBonus = getCharmBonus("Charming");
                 int tips = 0;
                 if (rand.nextDouble() * 100 < tipsBonus) {
-                    tips = (int)(menu.getPrice() * 0.1);
+                    tips = (int) (menu.getPrice() * 0.1);
                 }
                 int earned = (int) menu.getPrice() + tips;
                 restaurant.addMoney(earned);
                 totalRevenue += earned;
                 customersServed++;
                 logLine = "✅ Pelanggan memesan " + menu.getName() +
-                          " (+Rp" + (int)menu.getPrice() + (tips > 0 ? " +tips Rp"+tips : "") + ")";
+                        " (+Rp" + (int) menu.getPrice() + (tips > 0 ? " +tips Rp" + tips : "") + ")";
             }
         } catch (OutOfStockException e) {
             logLine = "⚠️ Bahan habis untuk " + menu.getName() + " — pelanggan kecewa.";
         }
 
         dailyLog.add(logLine);
-        if (activeLevelScene != null) activeLevelScene.setGameMessage(logLine);
+        if (activeLevelScene != null)
+            activeLevelScene.setGameMessage(logLine);
         refreshHUD();
     }
 
     /** Versi silent untuk skip */
     private void spawnCustomerSilent() {
-        if (restaurant.getMenu().isEmpty()) return;
+        if (restaurant.getMenu().isEmpty())
+            return;
         Random rand = new Random();
         Sellable menu = restaurant.getMenu().get(rand.nextInt(restaurant.getMenu().size()));
+
+        double basePrice = getBasePrice(menu.getName());
+        double priceRatio = basePrice > 0 ? menu.getPrice() / basePrice : 1.0;
+        double tooExpensiveChance = 0;
+        if (priceRatio > 1.0) {
+            tooExpensiveChance = (priceRatio - 1.0) * 100.0 * 1.5;
+        }
+        if (tooExpensiveChance > 0 && rand.nextDouble() * 100 < tooExpensiveChance) {
+            return;
+        }
+
         try {
             menu.sell(restaurant.getInventory());
             double secBonus = getCharmBonus("Security");
@@ -364,7 +449,8 @@ public class GameController {
                 totalRevenue += (int) menu.getPrice();
                 customersServed++;
             }
-        } catch (OutOfStockException ignored) {}
+        } catch (OutOfStockException ignored) {
+        }
     }
 
     /** Trigger bencana acak */
@@ -378,7 +464,8 @@ public class GameController {
                 int kerugian = 20000;
                 totalLoss += kerugian;
                 dailyLog.add("🐀 BENCANA! Tikus menyerang dapur! Stok berkurang.");
-                if (activeLevelScene != null) activeLevelScene.setGameMessage("🐀 TIKUS MENYERANG! Stok berkurang!");
+                if (activeLevelScene != null)
+                    activeLevelScene.setGameMessage("🐀 TIKUS MENYERANG! Stok berkurang!");
                 mainFrame.showPopupTikus();
             } else {
                 dailyLog.add("🐀 Tikus datang tapi Jimat Cleaner mencegahnya!");
@@ -386,7 +473,8 @@ public class GameController {
         } else {
             // Pembeli kabur extra
             dailyLog.add("💨 Pembeli kabur mendadak!");
-            if (activeLevelScene != null) activeLevelScene.setGameMessage("💨 Ada pembeli yang kabur!");
+            if (activeLevelScene != null)
+                activeLevelScene.setGameMessage("💨 Ada pembeli yang kabur!");
             mainFrame.showPopupKabur();
         }
         refreshHUD();
@@ -396,21 +484,27 @@ public class GameController {
     private double getCharmBonus(String tipe) {
         double bonus = 0;
         for (Charm c : restaurant.getActiveCharms()) {
-            if (tipe.equals("Security") && c instanceof SecurityCharm) bonus += c.getEffectPercentage();
-            if (tipe.equals("Charming") && c instanceof CharmingCharm) bonus += c.getEffectPercentage();
-            if (tipe.equals("Cleaner")  && c instanceof CleanerCharm)  bonus += c.getEffectPercentage();
+            if (tipe.equals("Security") && c instanceof SecurityCharm)
+                bonus += c.getEffectPercentage();
+            if (tipe.equals("Charming") && c instanceof CharmingCharm)
+                bonus += c.getEffectPercentage();
+            if (tipe.equals("Cleaner") && c instanceof CleanerCharm)
+                bonus += c.getEffectPercentage();
         }
         return Math.min(bonus, 90); // cap 90%
     }
 
     /** Hentikan fase penjualan dan pindah ke rekap */
     private void endSellingPhase(boolean skipped) {
-        if (customerTimer  != null) customerTimer.stop();
-        if (countdownTimer != null) countdownTimer.stop();
+        if (customerTimer != null)
+            customerTimer.stop();
+        if (countdownTimer != null)
+            countdownTimer.stop();
 
         // Kerugian bahan basi
         int basiLoss = 0;
-        for (int val : restaurant.getInventory().values()) basiLoss += val * 1000;
+        for (int val : restaurant.getInventory().values())
+            basiLoss += val * 1000;
         totalLoss += basiLoss;
         dailyLog.add("🗑️ Bahan sisa dibuang (kerugian Rp" + basiLoss + ")");
 
@@ -423,13 +517,13 @@ public class GameController {
     }
 
     // ══════════════════════════════════════════════════════════════════════════
-    //  REKAP
+    // REKAP
     // ══════════════════════════════════════════════════════════════════════════
 
     private void showRecap(boolean skipped, int basiLoss) {
         if (rekapScene != null) {
             rekapScene.update(currentDay, totalRevenue, totalLoss, basiLoss,
-                              (int) restaurant.getMoney(), dailyLog);
+                    (int) restaurant.getMoney(), dailyLog);
             mainFrame.showPanel("rekap");
         }
     }
@@ -445,14 +539,14 @@ public class GameController {
     }
 
     // ══════════════════════════════════════════════════════════════════════════
-    //  HELPERS
+    // HELPERS
     // ══════════════════════════════════════════════════════════════════════════
 
     /** Pastikan bahan dasar ada agar game tidak langsung crash */
     private void ensureBasicStock() {
         String[][] basics = {
-            {"Kopi","Susu"},{"Ayam","Beras"},{"Kentang","Minyak"},
-            {"Susu"},{"Jambu","Gula"},{"Melon","Gula"}
+                { "Kopi", "Susu" }, { "Ayam", "Beras" }, { "Kentang", "Minyak" },
+                { "Susu" }, { "Jambu", "Gula" }, { "Melon", "Gula" }
         };
         int menuCount = restaurant.getMenu().size();
         for (int i = 0; i < menuCount; i++) {
@@ -479,11 +573,14 @@ public class GameController {
         }
         if (dapurScene != null) {
             dapurScene.refresh((int) restaurant.getMoney(), getTotalStock(),
-                               restaurant.getInventory(), restaurant.getMenu());
+                    restaurant.getInventory(), restaurant.getMenu());
         }
         if (jimatScene != null) {
             jimatScene.refresh((int) restaurant.getMoney(), restaurant.getActiveCharms());
         }
     }
-    public MainFrame mainFrame() { return mainFrame; }
+
+    public MainFrame mainFrame() {
+        return mainFrame;
+    }
 }

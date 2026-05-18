@@ -1,5 +1,5 @@
 Day: 1
-Money: 175000.0
+Money: 160000.0
 Capacity: 10
 Level: 1
 Inventory:
