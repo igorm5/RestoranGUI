@@ -1,0 +1,84 @@
+@startuml
+package "org.model" {
+
+abstract class Charm {
+  - effectPercentage: double
+  - name: String
+  + Charm(name: String)
+  + getName(): String
+  + getEffectPercentage(): double
+}
+
+class CharmingCharm
+class CleanerCharm
+class SecurityCharm
+
+interface Sellable {
+  + getPrice(): double
+  + getName(): String
+  + sell(inventory: Map<String,Integer>)
+}
+
+abstract class MenuItem {
+  - name: String
+  - price: double
+  - recipe: Map<String,Integer>
+  + MenuItem(name: String, price: double)
+  + addIngredient(ingredient: String, amount: int)
+  + setPrice(price: double)
+  + getPrice(): double
+  + getName(): String
+  + sell(inventory: Map<String,Integer>)
+}
+
+class Food
+class Drink {
+  - type: String
+}
+class Snack
+
+class OutOfStockException
+
+class Restaurant {
+  - money: double
+  - capacity: int
+  - inventory: Map<String,Integer>
+  - menuList: List<Sellable>
+  - activeCharms: List<Charm>
+  + Restaurant(initialMoney: double, capacity: int)
+  + addMenu(menu: Sellable)
+  + addInventory(item: String, amount: int)
+  + addCharm(charm: Charm)
+  + addMoney(amount: double)
+  + getMoney(): double
+  + getCapacity(): int
+  + setCapacity(capacity: int)
+  + getMenu(): List<Sellable>
+  + getInventory(): Map<String,Integer>
+  + getActiveCharms(): List<Charm>
+  + ratDisaster()
+  + saveProgress(day: int, level: int)
+  + clearInventory()
+}
+
+}
+
+' Inheritance
+Charm <|-- CharmingCharm
+Charm <|-- CleanerCharm
+Charm <|-- SecurityCharm
+
+MenuItem <|-- Food
+MenuItem <|-- Drink
+MenuItem <|-- Snack
+
+MenuItem -|> Sellable
+
+OutOfStockException -|> Exception
+
+' Associations
+Restaurant "1" o-- "*" Sellable : menuList
+Restaurant "1" o-- "*" Charm : activeCharms
+Restaurant *-- Map : inventory
+
+@enduml
